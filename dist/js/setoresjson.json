@@ -1,0 +1,11 @@
+
+{"setores":[
+
+		{codigo: 1, nome: 'Json', latitude: '10.9', longitude: '-90'},
+		{codigo: 2, nome: 'Ambulatorio Maria Fernanda', latitude: '8.9', longitude: '5'},
+		{codigo: 3, nome: 'João de Deus 5º Andar', latitude: '9.2', longitude: '3'},
+		{codigo: 4, nome: 'João de Deus 8º Andar', latitude: '9.0', longitude: '3'},
+		{codigo: 4, nome: 'João de Deus 2º Andar UTI', latitude: '9.2', longitude: '3'}
+		
+		]
+}

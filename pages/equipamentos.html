@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en" ng-app="equipamentosModulo">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="../favicon.png">
+      <title>Equipamentos</title>
+      <!-- Bootstrap core CSS -->
+      <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="style4.css">
+      <!-- Custom styles for this template -->
+      <link href="form-validation.css" rel="stylesheet">
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+      <!-- Font Awesome JS -->
+      <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+      <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+      <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js" data-semver="1.2.16"></script>
+      <script src="../dist/js/equipamentos.js"></script>
+      <script src="../dist/js/dirPagination.js"></script>
+      
+   </head>
+   <body class="bg-light" ng-controller = "equipamentosController">
+      <div class="wrapper">
+         <!-- Sidebar  -->
+         <nav id="sidebar">
+            <div class="sidebar-header">
+               <h3>Menu</h3>
+               <strong>MN</strong>
+            </div>
+            <ul class="list-unstyled components">
+               <li>
+                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  <i class="fas fa-copy"></i>
+                  Páginas
+                  </a>
+                  <ul class="collapse list-unstyled" id="pageSubmenu">
+                     <li>
+                        <a href="setores.html">Setores</a>
+                     </li>
+                     <li>
+                        <a href="equipamentos.html">Equipamentos</a>
+                     </li>
+                  </ul>
+               </li>
+               <li>
+                  <a href="index4.html">
+                  <i class="fas fa-paper-plane"></i>
+                  Notificações
+                  </a>
+               </li>
+            </ul>
+         </nav>
+         <!-- Page Content  -->
+         <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <div class="container-fluid">
+                  <button type="button" id="sidebarCollapse" class="btn btn-basic">
+                  <i class="fas fa-align-left"></i>
+                  <span>Menu</span>
+                  </button>
+                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <i class="fas fa-align-justify"></i>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                           <a class="nav-link" href="#">Page</a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </nav>
+            <nav>
+               <div class="nav nav-tabs" id="myTab" role="tablist">
+                  <a class="nav-item nav-link active" id="nav-lista-tab" data-toggle="tab" href="#nav-lista" role="tab" aria-controls="nav-lista" aria-selected="true">Lista</a>
+                  <a class="nav-item nav-link" id="nav-Cadastro-tab" data-toggle="tab" href="#nav-Cadastro" role="tab" aria-controls="nav-Cadastro" aria-selected="false">Cadastro</a>
+                  <!--a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a-->
+               </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+               <div class="tab-pane fade show active" id="nav-lista" role="tabpanel" aria-labelledby="nav-lista-tab">
+                  <div class="my-3 p-3 bg-white rounded shadow-sm">
+                     <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
+                     <br>
+                     <div class = "container">
+                        <div class="input-group">
+                           <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-search"></i></span>
+                           </div>
+                           <input type="text" ng-model = "pesquisaequipamento" class="form-control" id="pesquisa" >
+                        </div>
+                        <br>
+                        <table class="table table-bordered table-hover">
+                           <thead>
+                              <tr>
+                                 <th ng-click="ordenar('codigo')">Código <i class="fa fa-fw fa-sort"></i></th>
+                                 <th ng-click="ordenar('nome')">Nome <i class="fa fa-fw fa-sort"></i></th>
+                                 <th ng-click="ordenar('patrimonio')">Patrimonio<i class="fa fa-fw fa-sort"></i></th>
+                                 <th ng-click="ordenar('marca')">Marca <i class="fa fa-fw fa-sort"></i></th>
+                                 <th ng-click="ordenar('modelo')">Modelo <i class="fa fa-fw fa-sort"></i></th>
+                                 <th ng-click="ordenar('serie')">Serie <i class="fa fa-fw fa-sort"></i></th>
+                                 <th ng-click="ordenar('setor')">Setor <i class="fa fa-fw fa-sort"></i></th>
+                                 <th ng-click="ordenar('tag')">TagId <i class="fa fa-fw fa-sort"></i></th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr dir-paginate = "equipamentosTabela in equipamentos | filter : pesquisaequipamento  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaequipamento(equipamentosTabela)"								>
+                                 <td>{{equipamentosTabela.codigo}}</td>
+                                 <td>{{equipamentosTabela.nome}}</td>
+                                 <td>{{equipamentosTabela.patrimonio}}</td>
+                                 <td>{{equipamentosTabela.marca}}</td>
+                                 <td>{{equipamentosTabela.modelo}}</td>
+                                 <td>{{equipamentosTabela.serie}}</td>
+                                 <td>{{equipamentosTabela.setor.nome}}</td>
+                                 <td>{{equipamentosTabela.tag}}</td>
+                              </tr>
+                              <br>
+                           </tbody>
+                        </table>
+                        <dir-pagination-controls max-size="4" boundary-links="true"></dir-pagination-controls>
+                     </div>
+                  </div>
+               </div>
+               <div class="tab-pane fade" id="nav-Cadastro" role="tabpanel" aria-labelledby="nav-Cadastro-tab">
+                  <div class="my-3 p-3 bg-white rounded shadow-sm">
+                     <h6>
+                     Cadastrar de equipamento
+                     <h6>
+                     <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
+                     <br>
+                     <form name="customerForm" class="needs-validation" novalidate>
+                        <div class="row">
+                           <div class="col-md-3 mb-3">
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <span class="input-group-text">Código</span>
+                                 </div>
+                                 <input type="text" ng-model = "equipamento.codigo" class="form-control" id="codigo" readonly>
+                                 <div class="invalid-feedback" style="width: 100%;">
+                                    Codigo ?
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-9 mb-3">
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <span class="input-group-text">Nome</span>
+                                 </div>
+                                 <input type="text" class="form-control" id="nome" placeholder="Nome" ng-model ="equipamento.nome" required>
+                                 <div class="invalid-feedback">
+                                    Preencha o nome do equipamento.
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-5 mb-3">
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <span class="input-group-text">Marca</span>
+                                 </div>
+                                 <input type="text" ng-model = "equipamento.marca" class="form-control" placeholder="Marca " id="marca" required>
+                                 <div class="invalid-feedback" style="width: 100%;">
+                                    Digite a marca do equipamento
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-7 mb-3">
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <span class="input-group-text">Modelo</span>
+                                 </div>
+                                 <input type="text" class="form-control" id="modelo" placeholder="Modelo" ng-model ="equipamento.modelo" required>
+                                 <div class="invalid-feedback">
+                                    Preencha o modelo do equipamento.
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-5 mb-3">
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <span class="input-group-text">Serie</span>
+                                 </div>
+                                 <input type="text" ng-model = "equipamento.serie" class="form-control" placeholder="Serie " id="serie" required>
+                                 <div class="invalid-feedback" style="width: 100%;">
+                                    Digite a serie do equipamento
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-7 mb-3">
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <span class="input-group-text">Patrimônio</span>
+                                 </div>
+                                 <input type="text" class="form-control" id="Patrimonio" placeholder="Patrimônio" ng-model ="equipamento.patrimonio" required>
+                                 <div class="invalid-feedback">
+                                    Preencha o patrimônio do equipamento.
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="input-group mb-3">
+                           <div class="input-group-prepend">
+                              <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target=".bd-table-modal-lg"><i class="fa fa-search"></i> Setor</button>
+                           </div>
+						   
+                           <select ng-model ="equipamento.setor"  class="custom-select" id="inputGroupSelect3" 
+                              ng-options = "setor.nome for setor in setores track by setor.codigo"
+                              >
+							  
+                           </select>
+                        </div>
+                        <div class="modal fade bd-table-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title">Procurar Setor</h5>
+                                    <button type="button" class="close" data-dismiss="modal"  aria-label="Fechar"> 
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class = "container">
+                                    <br>
+                                    <div class="input-group">
+                                       <div class="input-group-prepend">
+                                          <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                       </div>
+                                       <input type="text" ng-model = "pesquisaSetor" class="form-control" id="pesquisa" >
+                                    </div>
+                                    <br>
+                                    <table class="table table-bordered table-hover">
+                                       <thead>
+                                          <tr>
+                                             <th ng-click="ordenar('codigo')">Código <i class="fa fa-fw fa-sort"></i></th>
+                                             <th ng-click="ordenar('nome')">Nome <i class="fa fa-fw fa-sort"></i></th>
+                                             <th ng-click="ordenar('latitude')">Latitude<i class="fa fa-fw fa-sort"></i></th>
+                                             <th ng-click="ordenar('longitude')">Longitude <i class="fa fa-fw fa-sort"></i></th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr dir-paginate = "setoresTabela in setores | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaSetor(setoresTabela)" 								>
+                                             <td>{{setoresTabela.codigo}}</td>
+                                             <td>{{setoresTabela.nome}}</td>
+                                             <td>{{setoresTabela.latitude}}</td>
+                                             <td>{{setoresTabela.longitude}}</td>
+                                          </tr>
+                                          <br>
+                                       </tbody>
+                                    </table>
+                                    <dir-pagination-controls max-size="4" boundary-links="true"></dir-pagination-controls>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <a href="" onclick="toggle_visibility('foo');"><i class="fa fa-plus-circle"></i> Adicionar Etiqueta para Rastreamento</a>
+                        <div id="foo" style="display:none" >
+                           <br>
+                           <div class="input-group mb-3" >
+                              <div class="input-group-prepend">
+                                 <span class="input-group-text" id="basic-addon1">Nº de Identificação </span>
+                              </div>
+                              <input type="text" class="form-control" placeholder="" ng-model = equipamento.tag aria-describedby="basic-addon1">
+                           </div>
+                        </div>
+                        <script type="text/javascript">
+                           function toggle_visibility(id) {
+                              var e = document.getElementById(id);
+                              if(e.style.display == 'block')
+                           	  e.style.display = 'none';
+                              else
+                           	  e.style.display = 'block';
+                           }
+                           
+                        </script>
+                        <br>
+                        <br>
+                        <div class="form-group">
+                           <div class="form-group" align = "center">
+                              <button type="reset" formnovalidate ng-click = "limparCampos()" class="btn btn-primary"> <i class="fa fa-eraser"></i> Limpar </button>
+                              <button type="submit" ng-disabled ="customerForm.$invalid" ng-click =salvar()  class="btn btn-success"> <i class="fa fa-save"></i>  Salvar</button>
+                              <button type="button" formnovalidate ng-click = "excluir()" class="btn btn-danger"> <i class="fa fa-trash"></i>  Delete</button>
+                           </div>
+                        </div>
+                        <!--hr class="mb-4">
+                           <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button-->
+                     </form>
+                  </div>
+               </div>
+               <!--div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">3</div-->
+            </div>
+            <div class="container-fluid">
+            </div>
+         </div>
+      </div>
+      <!-- Bootstrap core JavaScript
+         ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+      <script src="../assets/js/vendor/popper.min.js"></script>
+      <script src="../dist/js/bootstrap.min.js"></script>
+      <script src="../assets/js/vendor/holder.min.js"></script>
+      <script>
+         // Example starter JavaScript for disabling form submissions if there are invalid fields
+         (function() {
+           'use strict';
+         $('#sidebarCollapse').on('click', function () {
+                   $('#sidebar').toggleClass('active');
+         
+               });
+         
+           window.addEventListener('load', function() {
+             // Fetch all the forms we want to apply custom Bootstrap validation styles to
+             var forms = document.getElementsByClassName('needs-validation');
+         
+             // Loop over them and prevent submission
+             var validation = Array.prototype.filter.call(forms, function(form) {
+               form.addEventListener('submit', function(event) {
+                 if (form.checkValidity() === false) {
+                   event.preventDefault();
+                   event.stopPropagation();
+                 }
+                 form.classList.add('was-validated');
+               }, false);
+         
+             });
+         
+           }, false);
+         })();
+      </script>
+   </body>
+   <footer align="center" class="sticky-footer">
+      <div class="container my-auto">
+         <div class="copyright text-center my-auto">
+            <span>Copyright © Your Website 2018</span>
+         </div>
+      </div>
+   </footer>
+   <script src="../dist/js/jquery.min.js"></script>
+</html>

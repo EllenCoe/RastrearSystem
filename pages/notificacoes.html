@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" ng-app="setoresModulo">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="../favicon.png">
+      <title>Notificações</title>
+      <!-- Bootstrap core CSS -->
+      <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="style4.css">
+      <!-- Custom styles for this template -->
+      <link href="form-validation.css" rel="stylesheet">
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+      <!-- Font Awesome JS -->
+      <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+      <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+      <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js" data-semver="1.2.16"></script>
+      <script src="../dist/js/setores.js"></script>
+      <script src="../dist/js/dirPagination.js"></script>
+   </head>
+   <body class="bg-light" ng-controller = "setoresController">
+      <div class="wrapper">
+         <!-- Sidebar  -->
+         <nav id="sidebar">
+            <div class="sidebar-header">
+               <h3>Menu</h3>
+               <strong>MN</strong>
+            </div>
+            <ul class="list-unstyled components">
+               <li>
+                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  <i class="fas fa-copy"></i>
+                  Páginas
+                  </a>
+                  <ul class="collapse list-unstyled" id="pageSubmenu">
+                     <li>
+                        <a href="setores.html">Setores</a>
+                     </li>
+                     <li>
+                        <a href="equipamentos.html">Equipamentos</a>
+                     </li>
+                  </ul>
+               </li>
+               <li>
+                  <a href="notificacoes.html">
+                  <i class="fas fa-paper-plane"></i>
+                  Notificações
+                  </a>
+               </li>
+            </ul>
+         </nav>
+         <!-- Page Content  -->
+         <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <div class="container-fluid">
+                  <button type="button" id="sidebarCollapse" class="btn btn-basic">
+                  <i class="fas fa-align-left"></i>
+                  <span>Menu</span>
+                  </button>
+                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <i class="fas fa-align-justify"></i>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                           <a class="nav-link" href="#">Login</a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </nav>
+           
+            
+            <div class="container-fluid">
+			
+				<div class="card border-danger mb-3" style="max-width: 18rem;">
+					<div class="card-header bg-transparent border-danger">Equipamento Fora do Setor</div>
+					<div class="card-body text-danger">
+						<h5 class="card-title"></h5>
+						<p class="card-text">Deve conter os principais dados do equipamento, como Nome, Patrimonio, Setor e Horário de Notificação</p>
+					</div>
+					<div class="card-footer bg-transparent border-danger">Footer</div>
+				</div>
+				
+				<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+				  <div class="card-header">Header</div>
+				  <div class="card-body">
+					<h5 class="card-title">Danger card title</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+				  </div>
+				</div>
+				<div class="card border-danger mb-3" style="max-width: 18rem;">
+				  <div class="card-header">Header</div>
+				  <div class="card-body text-danger">
+					<h5 class="card-title">Danger card title</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+				  </div>
+				</div>
+            </div>
+         </div>
+      </div>
+      <!-- Bootstrap core JavaScript
+         ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+      <script src="../assets/js/vendor/popper.min.js"></script>
+      <script src="../dist/js/bootstrap.min.js"></script>
+      <script src="../assets/js/vendor/holder.min.js"></script>
+     
+   </body>
+   <footer align="center" class="sticky-footer">
+      <div class="container my-auto">
+         <div class="copyright text-center my-auto">
+            <span>Copyright © Your Website 2018</span>
+         </div>
+      </div>
+   </footer>
+   <script src="../dist/js/jquery.min.js"></script>
+</html>
