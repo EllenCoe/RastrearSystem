@@ -14,12 +14,46 @@
       <link href="form-validation.css" rel="stylesheet">
       <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+      <!-- Config Firebase -->
+      <script src = "https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+      <script src="../dist/js/config.js"></script>
+      
       <!-- Font Awesome JS -->
       <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
       <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
       <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js" data-semver="1.2.16"></script>
       <script src="../dist/js/setores.js"></script>
       <script src="../dist/js/dirPagination.js"></script>
+
+
+
+      <script>
+      
+
+      var arraySetor = [];
+      
+      var setor = function(arraySetor,callback){
+         ref.child("setor").once('value',function (snapshot) {
+
+            feed = [];
+            snapshot.forEach(function (child) {
+               var data = child.val();
+               feed.push(data);				
+            });
+            callback(feed);
+
+         });
+      }
+      setor(arraySetor,function (callback) {
+         for(var i=0;i<=callback.length;i++){
+            arraySetor.push(callback[i]);
+         }
+      });
+
+      console.log(arraySetor);
+
+      </script>
+
    </head>
    <body class="bg-light" ng-controller = "setoresController">
       <div class="wrapper">
@@ -102,11 +136,11 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr dir-paginate = "setoresTabela in setores | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaSetor(setoresTabela)"								>
-                                 <td>{{setoresTabela.codigo}}</td>
-                                 <td>{{setoresTabela.nome}}</td>
-                                 <td>{{setoresTabela.latitude}}</td>
-                                 <td>{{setoresTabela.longitude}}</td>
+                              <tr id = "lista" dir-paginate = "setoresTabela in setores | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaSetor(setoresTabela)">
+                                 <td style="display:none">{{setoresTabela.codigo}}</td>
+                                 <td style="display:none">{{setoresTabela.nome}}</td>
+                                 <td style="display:none">{{setoresTabela.latitude}}</td>
+                                 <td style="display:none">{{setoresTabela.longitude}}</td>
                               </tr>
                               <br>
                            </tbody>
@@ -124,17 +158,17 @@
                      <br>
                      <form name="customerForm" class="needs-validation" novalidate>
                         <div class="row">
-                           <div class="col-md-3 mb-3">
-                              <div class="input-group">
-                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Código</span>
-                                 </div>
-                                 <input type="text" ng-model = "setor.codigo" class="form-control" id="codigo" readonly>
-                                 <div class="invalid-feedback" style="width: 100%;">
-                                    Codigo ?
-                                 </div>
-                              </div>
-                           </div>
+                           <!--<div class="col-md-3 mb-3">-->
+                              <!--<div class="input-group">-->
+                                 <!--<div class="input-group-prepend">-->
+                                    <!--<span class="input-group-text">Código</span>-->
+                                 <!--</div>-->
+                                 <!--<input type="text" ng-model = "setor.codigo" class="form-control" id="codigo" readonly>-->
+                                 <!--<div class="invalid-feedback" style="width: 100%;">-->
+                                    <!--Codigo ?-->
+                                 <!--</div>-->
+                              <!--</div>-->
+                           <!--</div>-->
                            <div class="col-md-9 mb-3">
                               <div class="input-group">
                                  <div class="input-group-prepend">

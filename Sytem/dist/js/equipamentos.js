@@ -1,3 +1,11 @@
+var ref = firebase.database().ref();
+
+
+function cadastrar(data,id,tabela){
+    postData = data;
+	ref.child('/'+ tabela + '/' + id).set(postData);
+}
+
 var equipamentosModulo = angular.module('equipamentosModulo', ['dirPagination']);
 equipamentosModulo.controller("equipamentosController", function($scope, $http, $window) {
     
@@ -54,26 +62,45 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         $scope.equipamento = "";
     },
     $scope.salvar = function() {
+
+        nome = $("#nome").val();
+		marca = $("#marca").val();
+        modelo = $("#modelo").val();
+        serie = $("#serie").val();
+        patrimonio = $("#patrimonio").val();
+        tag_ident = $("#tag_ident").val();
+
+        if (tag_ident == "" || tag_ident == undefined){
+            tag_ident = false;
+        }
+
+
+		ref.child("equipamento").once('value', function(snapshot) {
+			if (!(snapshot.exists())){
+				id = 1;
+			}
+			else{
+				json = snapshot.val();
+				id = Object.keys(json).sort().pop();
+                id = parseInt(id)
+				id = id + 1;
+            }
+            postData = {
+                codigo: id,
+                nome: nome,
+                marca: marca,
+                serie: serie,
+                patrimonio: patrimonio,
+                tag_ident: tag_ident
+            };
+			cadastrar(postData,id,"equipamento");
+		});
+
+
         $scope.equipamentos.push($scope.equipamento);
-        $scope.limparCampos();
+        // $scope.limparCampos();
         alert("equipamento Salvo Com Sucesso!");
-        /*if ($scope.equipamento.codigo == undefined) {
-        $http.post(urlequipamento,$scope.equipamento).success(function(equipamento) {
-        alert("Salvo com Sucesso!");
-        //$scope.listarequipamentos();
-        $scope.limparCampos();
-        }).error (function (erro) {
-        alert(erro);
-        });
-        } else {
-        $http.put(urlequipamento,$scope.equipamento).success(function(equipamento) {
-        alert("Salvo com Sucesso!");
-        //$scope.listarequipamentos();
-        $scope.limparCampos();
-        }).error (function (erro) {
-        alert(erro);
-        });	
-        }*/
+        
     },
     $scope.excluir = function() {
         $scope.equipamentos.splice($scope.equipamentos.indexOf($scope.equipamentos, 1));
