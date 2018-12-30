@@ -25,35 +25,6 @@
       <script src="../dist/js/setores.js"></script>
       <script src="../dist/js/dirPagination.js"></script>
 
-
-
-      <script>
-      
-
-      var arraySetor = [];
-      
-      var setor = function(arraySetor,callback){
-         ref.child("setor").once('value',function (snapshot) {
-
-            feed = [];
-            snapshot.forEach(function (child) {
-               var data = child.val();
-               feed.push(data);				
-            });
-            callback(feed);
-
-         });
-      }
-      setor(arraySetor,function (callback) {
-         for(var i=0;i<=callback.length;i++){
-            arraySetor.push(callback[i]);
-         }
-      });
-
-      console.log(arraySetor);
-
-      </script>
-
    </head>
    <body class="bg-light" ng-controller = "setoresController">
       <div class="wrapper">
@@ -79,7 +50,7 @@
                   </ul>
                </li>
                <li>
-                  <a href="index4.html">
+                  <a href="notificacao.html">
                   <i class="fas fa-paper-plane"></i>
                   Notificações
                   </a>
@@ -133,15 +104,24 @@
                                  <th ng-click="ordenar('nome')">Nome <i class="fa fa-fw fa-sort"></i></th>
                                  <th ng-click="ordenar('latitude')">Latitude<i class="fa fa-fw fa-sort"></i></th>
                                  <th ng-click="ordenar('longitude')">Longitude <i class="fa fa-fw fa-sort"></i></th>
+                                 <th>Editar</th>
+                                 <th>Deletar</th>
                               </tr>
                            </thead>
                            <tbody>
-                              <tr id = "lista" dir-paginate = "setoresTabela in setores | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaSetor(setoresTabela)">
-                                 <td style="display:none">{{setoresTabela.codigo}}</td>
-                                 <td style="display:none">{{setoresTabela.nome}}</td>
+                              <tr id = "lista" dir-paginate = "setoresTabela in setores  | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:propertyName:reverse" ng-click = "selecionaSetor(setoresTabela)">
+                                 
+                                 <td id = "codigo-{{setoresTabela.codigo}}"style="display:none">{{setoresTabela.codigo}}</td>
+                                 <td style="display:none">
+                                    <span id = "span-nome-{{setoresTabela.codigo}}">{{setoresTabela.nome}}</span> 
+                                    <input id = "input-nome-{{setoresTabela.codigo}}" style = "display:none" value = "" type="text"  id="nome" placeholder="Nome" required> 
+                                 </td>
                                  <td style="display:none">{{setoresTabela.latitude}}</td>
-                                 <td style="display:none">{{setoresTabela.longitude}}</td>
+                                 <td style="display:none">{{setoresTabela.longitude}}</td>                              
+                                 <td><button type="button" id = "editar-{{setoresTabela.codigo}}" formnovalidate ng-click = "editar(setoresTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-edit"></i></td>
+                                 <td><button type="button" id = "excluir" formnovalidate ng-click = "excluir()"  class="btn btn-outline-secondary">  <i class="fas fa-trash"></i></td>
                               </tr>
+                              
                               <br>
                            </tbody>
                         </table>
@@ -157,27 +137,14 @@
                      <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
                      <br>
                      <form name="customerForm" class="needs-validation" novalidate>
-                        <div class="row">
-                           <!--<div class="col-md-3 mb-3">-->
-                              <!--<div class="input-group">-->
-                                 <!--<div class="input-group-prepend">-->
-                                    <!--<span class="input-group-text">Código</span>-->
-                                 <!--</div>-->
-                                 <!--<input type="text" ng-model = "setor.codigo" class="form-control" id="codigo" readonly>-->
-                                 <!--<div class="invalid-feedback" style="width: 100%;">-->
-                                    <!--Codigo ?-->
-                                 <!--</div>-->
-                              <!--</div>-->
-                           <!--</div>-->
-                           <div class="col-md-9 mb-3">
-                              <div class="input-group">
-                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Setor</span>
-                                 </div>
-                                 <input type="text" class="form-control" id="nome" placeholder="Nome" ng-model ="setor.nome" required>
-                                 <div class="invalid-feedback">
-                                    Preencha o nome do setor.
-                                 </div>
+                        <div class="mb-3">
+                           <div class="input-group">
+                              <div class="input-group-prepend">
+                                 <span class="input-group-text">Setor</span>
+                              </div>
+                              <input type="text" class="form-control" id="nome" placeholder="Nome" ng-model ="setor.nome" required>
+                              <div class="invalid-feedback">
+                                 Preencha o nome do setor.
                               </div>
                            </div>
                         </div>

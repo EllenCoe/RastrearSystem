@@ -99,6 +99,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         if (tag_ident == "" || tag_ident == undefined){
             tag_ident = false;
         }
+        //else, cadastra na tabela de log
 
 
 		ref.child("equipamento").once('value', function(snapshot) {

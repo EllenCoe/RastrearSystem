@@ -5,6 +5,7 @@ function cadastrar(data,id,tabela){
 	ref.child('/'+ tabela + '/' + id).set(postData);
 }
 
+
 var setoresModulo = angular.module('setoresModulo',['dirPagination']);
 
 setoresModulo.controller("setoresController", function($scope, $http,$window){
@@ -14,18 +15,17 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 
 	var setor = function(arraySetor,callback){
 		ref.child("setor").once('value',function (snapshot) {
-
 			feed = [];
 			snapshot.forEach(function (child) {
 				var data = child.val();
-				feed.push(data);				
+				feed.push(data);
 			});
 			callback(feed);
 
 		});
 	}
 	setor(arraySetor,function (callback) {
-		for(var i=0;i<=callback.length;i++){
+		for(var i=0;i<callback.length;i++){
 			arraySetor.push(callback[i]);
 		}
 	});
@@ -42,6 +42,11 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 	}
 	$scope.limparCampos = function(){
 		$scope.setor = "";
+	}
+
+	$scope.editar = function(id) {
+		$("#span-nome-"+id).hide();
+		$("#input-nome-"+id).show();
 	}
 			
 	$scope.salvar = function() {
