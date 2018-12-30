@@ -59,7 +59,7 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 			else{
 				json = snapshot.val();
 				id = Object.keys(json).sort().pop();
-                id = parseInt(id)
+                id = parseInt(id);
 				id = id + 1;
 			}
 

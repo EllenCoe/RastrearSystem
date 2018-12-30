@@ -9,29 +9,53 @@ function cadastrar(data,id,tabela){
 var equipamentosModulo = angular.module('equipamentosModulo', ['dirPagination']);
 equipamentosModulo.controller("equipamentosController", function($scope, $http, $window) {
     
-	//urlEquipamento = 'http://localhost:8080/RastrearSystem/rest/Equipamentos';
+    //urlEquipamento = 'http://localhost:8080/RastrearSystem/rest/Equipamentos';
+
     
-	$scope.setores = [{
-        codigo: 1,
-        nome: 'Egas Moniz',
-        latitude: '10.9',
-        longitude: '-90'
-    }, {
-        codigo: 2,
-        nome: 'Ambulatorio Maria Fernanda',
-        latitude: '8.9',
-        longitude: '5'
-    }, {
-        codigo: 3,
-        nome: 'João de Deus 5º Andar',
-        latitude: '9.2',
-        longitude: '3'
-    }, {
-        codigo: 4,
-        nome: 'João de Deus 8º Andar',
-        latitude: '9.0',
-        longitude: '3'
-    }, ];
+    var arraySetor = $scope.setores = [];
+
+	var setor = function(arraySetor,callback){
+		ref.child("setor").once('value',function (snapshot) {
+
+			feed = [];
+			snapshot.forEach(function (child) {
+				var data = child.val();
+				feed.push(data);				
+			});
+			callback(feed);
+
+		});
+	}
+	setor(arraySetor,function (callback) {
+		for(var i=0;i<=callback.length;i++){
+            arraySetor.push(callback[i]);
+            console.log(arraySetor);
+		}
+    });
+    
+	setTimeout(function(){ $("th").click(); }, 2000);
+    
+	// $scope.setores = [{
+    //     codigo: 1,
+    //     nome: 'Egas Moniz',
+    //     latitude: '10.9',
+    //     longitude: '-90'
+    // }, {
+    //     codigo: 2,
+    //     nome: 'Ambulatorio Maria Fernanda',
+    //     latitude: '8.9',
+    //     longitude: '5'
+    // }, {
+    //     codigo: 3,
+    //     nome: 'João de Deus 5º Andar',
+    //     latitude: '9.2',
+    //     longitude: '3'
+    // }, {
+    //     codigo: 4,
+    //     nome: 'João de Deus 8º Andar',
+    //     latitude: '9.0',
+    //     longitude: '3'
+    // }, ];
 	
     $scope.equipamentos = [{
         codigo: 1,
@@ -69,6 +93,8 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         serie = $("#serie").val();
         patrimonio = $("#patrimonio").val();
         tag_ident = $("#tag_ident").val();
+        setor = $("#inputGroupSelect3").val();
+        setor = parseInt(setor);
 
         if (tag_ident == "" || tag_ident == undefined){
             tag_ident = false;
@@ -91,13 +117,14 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
                 marca: marca,
                 serie: serie,
                 patrimonio: patrimonio,
-                tag_ident: tag_ident
+                tag_ident: tag_ident,
+                setor:setor
             };
 			cadastrar(postData,id,"equipamento");
 		});
 
 
-        $scope.equipamentos.push($scope.equipamento);
+        $scope.equipamentos.push(postData);
         // $scope.limparCampos();
         alert("equipamento Salvo Com Sucesso!");
         
