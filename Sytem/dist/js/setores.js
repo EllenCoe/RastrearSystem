@@ -45,8 +45,91 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 	}
 
 	$scope.editar = function(id) {
+
+
+		$("#editar-"+id).hide();
+		$("#alterar-"+id).show();
+		$("#cancel-"+id).show();
+
 		$("#span-nome-"+id).hide();
 		$("#input-nome-"+id).show();
+
+		$("#span-latitude-"+id).hide();
+		$("#input-latitude-"+id).show();
+
+		$("#span-longitude-"+id).hide();
+		$("#input-longitude-"+id).show();
+	}
+
+	$scope.alterar = function(id) {
+
+		nome_old = $("#span-nome-"+id).text();
+		latitude_old = $("#span-latitude-"+id).text();
+		longitude_old = $("#span-longitude-"+id).text();
+
+		
+
+		$("#cancel-"+id).hide();
+		$("#alterar-"+id).hide();
+		$("#editar-"+id).show();
+		
+		$("#span-nome-"+id).show();
+		$("#input-nome-"+id).hide();
+
+		$("#span-latitude-"+id).show();
+		$("#input-latitude-"+id).hide();
+
+		$("#span-longitude-"+id).show();
+		$("#input-longitude-"+id).hide();
+
+
+		nome = $("#input-nome-"+id).val();
+		latitude = $("#input-latitude-"+id).val();
+		longitude = $("#input-longitude-"+id).val();
+		
+		if (nome == ""){
+			nome = nome_old;
+		}
+		if (latitude == ""){
+			latitude = latitude_old;
+		}
+		if (longitude == ""){
+			longitude = longitude_old;
+		}
+		postData = {
+			codigo: id,
+			nome: nome,
+			latitude: latitude,
+			longitude: longitude
+		};
+		cadastrar(postData,id,"setor");
+
+		$scope.cancel(id);
+
+		$("#span-nome-"+id).text(nome);
+		$("#span-latitude-"+id).text(latitude);
+		$("#span-longitude-"+id).text(longitude);
+	}
+
+	$scope.excluir = function(id) {
+		// $scope.setores.splice($scope.setores.indexOf($scope.setores,1));
+
+		alert("Setor Deletado");
+	}
+
+	$scope.cancel = function(id) {
+		$("#cancel-"+id).hide();
+		$("#alterar-"+id).hide();
+		$("#editar-"+id).show();
+		
+		$("#span-nome-"+id).show();
+		$("#input-nome-"+id).hide();
+
+		$("#span-latitude-"+id).show();
+		$("#input-latitude-"+id).hide();
+
+		$("#span-longitude-"+id).show();
+		$("#input-longitude-"+id).hide();
 	}
 			
 	$scope.salvar = function() {
@@ -110,23 +193,6 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
                 }*/
 				
 
-	}
-			
-	$scope.excluir = function() {
-		$scope.setores.splice($scope.setores.indexOf($scope.setores,1));
-		$scope.limparCampos();
-		alert("Setor Deletado");
-		/*if ($scope.setor.codigo == undefined) {
-					alert("Favor selecionar um registro para poder excluir");
-					console.log("Favor selecionar um registro para poder excluir");
-				} else {
-					$http.delete(urlSetor+'/'+$scope.setor.codigo).success(function () {
-						 $scope.listarSetores();
-					     $scope.limparCampos();
-					  }).error (function (erro) {
-							alert(erro);
-						});	
-				}*/
 	}
 	
 	$scope.ordenar = function(keyname){

@@ -114,12 +114,22 @@
                                  <td id = "codigo-{{setoresTabela.codigo}}"style="display:none">{{setoresTabela.codigo}}</td>
                                  <td style="display:none">
                                     <span id = "span-nome-{{setoresTabela.codigo}}">{{setoresTabela.nome}}</span> 
-                                    <input id = "input-nome-{{setoresTabela.codigo}}" style = "display:none" value = "" type="text"  id="nome" placeholder="Nome" required> 
+                                    <input id = "input-nome-{{setoresTabela.codigo}}" style = "display:none" value = "" type="text"  id="nome" placeholder="{{setoresTabela.nome}}" required> 
                                  </td>
-                                 <td style="display:none">{{setoresTabela.latitude}}</td>
-                                 <td style="display:none">{{setoresTabela.longitude}}</td>                              
-                                 <td><button type="button" id = "editar-{{setoresTabela.codigo}}" formnovalidate ng-click = "editar(setoresTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-edit"></i></td>
-                                 <td><button type="button" id = "excluir" formnovalidate ng-click = "excluir()"  class="btn btn-outline-secondary">  <i class="fas fa-trash"></i></td>
+                                 <td style="display:none">
+                                    <span id = "span-latitude-{{setoresTabela.codigo}}">{{setoresTabela.latitude}}</span> 
+                                    <input id = "input-latitude-{{setoresTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="latitude" placeholder="{{setoresTabela.latitude}}"> 
+                                 </td>
+                                 <td style="display:none">
+                                    <span id = "span-longitude-{{setoresTabela.codigo}}">{{setoresTabela.longitude}}</span> 
+                                    <input id = "input-longitude-{{setoresTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="longitude" placeholder="{{setoresTabela.longitude}}"> 
+                                 </td>                              
+                                 <td>
+                                    <button type="button" id = "editar-{{setoresTabela.codigo}}" formnovalidate ng-click = "editar(setoresTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-edit"></i>
+                                    <button style="display:none" type="button" id = "alterar-{{setoresTabela.codigo}}" formnovalidate ng-click = "alterar(setoresTabela.codigo)"  class="btn btn-outline-secondary"> <i class="far fa-save"></i>
+                                    <button style="display:none" type="button" id = "cancel-{{setoresTabela.codigo}}" formnovalidate ng-click = "cancel(setoresTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-times"></i>
+                                 </td>
+                                 <td><button type="button" id = "excluir-{{setoresTabela.codigo}}" formnovalidate ng-click = "excluir(setoresTabela.codigo)"  class="btn btn-outline-secondary">  <i class="fas fa-trash"></i></td>
                               </tr>
                               
                               <br>
