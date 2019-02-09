@@ -5,6 +5,10 @@ function cadastrar(data,id,tabela){
 	ref.child('/'+ tabela + '/' + id).set(postData);
 }
 
+function delete_firebase(id,tabela){
+	ref.child('/'+ tabela + '/' + id).set(postData);
+}
+
 
 var setoresModulo = angular.module('setoresModulo',['dirPagination']);
 
@@ -111,9 +115,12 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		$("#span-longitude-"+id).text(longitude);
 	}
 
-	$scope.excluir = function(id) {
-		// $scope.setores.splice($scope.setores.indexOf($scope.setores,1));
+	$scope.excluir = function(id,setorSelecionado) {
+		$scope.setores = $scope.setores.filter(function(value, index, arr){
+			return value.codigo != id;
+		});
 
+		cadastrar(null,id,"setor");
 		alert("Setor Deletado");
 	}
 
