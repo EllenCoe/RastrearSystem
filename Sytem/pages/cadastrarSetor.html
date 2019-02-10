@@ -65,11 +65,11 @@
             </div>
             <ul class="list-unstyled components">
                <li>
-                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                  <i class="fas fa-copy"></i>
+                  <a href="#pageSubmenuCadastro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  <i class="fas fa-plus-square"></i>
                   Cadastrar
                   </a>
-                  <ul class="collapse list-unstyled" id="pageSubmenu">
+                  <ul class="collapse list-unstyled" id="pageSubmenuCadastro">
                      <li>
                         <a href="cadastrarSetor.html">Setor</a>
                      </li>
@@ -79,11 +79,11 @@
                   </ul>
                </li>
                <li>
-                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                  <i class="fas fa-copy"></i>
+                  <a href="#pageSubmenuList" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  <i class="fas fa-table"></i>
                   Listas
                   </a>
-                  <ul class="collapse list-unstyled" id="pageSubmenu">
+                  <ul class="collapse list-unstyled" id="pageSubmenuList">
                      <li>
                         <a href="setores.html">Setores</a>
                      </li>
@@ -94,38 +94,34 @@
                </li>
                <li>
                   <a href="monitoramento.html">
-                  <i class="fas fa-paper-plane"></i>
-                  Monitoramento
+                  <i class="fas fa-map-marker-alt"></i>
+                  Monitor
                   </a>
                </li>
             </ul>
          </nav>
          <!-- Page Content  -->
          <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light bg-full"">
                <div class="container-fluid">
-                  <button type="button" id="sidebarCollapse" class="btn btn-basic">
+                  <button type="button" id="sidebarCollapse" class="btn btn btn-outline-light">
                   <i class="fas fa-align-left"></i>
-                  <span>Menu</span>
+                  <span> Menu </span>
                   </button>
-                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <i class="fas fa-align-justify"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item active">
-                           <a class="nav-link" href="#">Page</a>
-                        </li>
-                     </ul>
-                  </div>
+                  
+				  <h1 class="title">Cadastro de Setor</h1>
+
+                  
                </div>
             </nav>
             
+			<div class="alert alert-success" id="alertCadastrar" style="display:none;" role="alert">
+				  Cadastro realizado com sucesso!
+			</div>
             
             <div class="my-3 p-3 bg-white rounded shadow-sm">
-               <h6>
-               Cadastro de Setor
-               <h6>
+               
+			   
                <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
                <br>
                <form name="customerForm" class="needs-validation" novalidate>
@@ -145,7 +141,7 @@
                         <div class="input-group-prepend">
                            <span class="input-group-text">Latitude</span>
                         </div>
-                        <input type="latitude" class="form-control" id="latitude" placeholder="Latitude" ng-model ="setor.latitude"required>
+                        <input type="number" step="0.0000010" class="form-control" id="latitude" placeholder="Latitude" ng-model ="setor.latitude"required>
                         <div class="invalid-feedback">
                            Preencha o valor da latitude.
                         </div>
@@ -156,7 +152,7 @@
                         <div class="input-group-prepend">
                            <span class="input-group-text">Longitude</span>
                         </div>
-                        <input type="longitude" class="form-control" id="longitude" placeholder="Longitude" ng-model ="setor.longitude" required>
+                        <input type="number" step="0.0000010" class="form-control" id="longitude" placeholder="Longitude" ng-model ="setor.longitude" required>
                         <div class="invalid-feedback">
                            Preencha o valor da longitude.
                         </div>

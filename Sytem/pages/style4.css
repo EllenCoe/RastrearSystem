@@ -15,6 +15,11 @@ p {
     line-height: 1.7em;
     color: #999;
 }
+h,
+
+h1.title {
+	font-size: 1.8rem; 
+	color: #49ab81;}
 
 a,
 a:hover,
@@ -25,12 +30,12 @@ a:focus {
 }
 
 .navbar {
-    padding: 15px 10px;
+    padding: 10px 10px;
     background: #fff;
     border: none;
-    border-radius: 0;
-    margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    margin-bottom: 10px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-btn {
@@ -43,7 +48,7 @@ a:focus {
     width: 100%;
     height: 1px;
     border-bottom: 1px dashed #ddd;
-    margin: 40px 0;
+    margin: 10px 0;
 }
 
 i,
@@ -63,14 +68,15 @@ span {
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    background: #536872;
+    background: #398564; 
+	
     color: #fff;
     transition: all 0.3s;
 }
 
 #sidebar.active {
-    min-width: 80px;
-    max-width: 80px;
+    min-width: 120px;
+    max-width: 120px;
     text-align: center;
 }
 
@@ -115,7 +121,7 @@ span {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #536872;
+    background: #317256;
 }
 
 #sidebar .sidebar-header strong {
@@ -125,7 +131,7 @@ span {
 
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid #708090;
+    border-bottom: 1px solid #419873;
 }
 
 #sidebar ul li a {
@@ -146,7 +152,7 @@ span {
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #1D4457;
+    background: #49ab81;
 }
 
 a[data-toggle="collapse"] {
@@ -164,7 +170,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #1D4457;
+    background: #52bf90; 
 }
 
 ul.CTAs {
@@ -196,7 +202,7 @@ a.article:hover {
 
 #content {
     width: 100%;
-    padding: 20px;
+    padding: 15px;
     min-height: 100vh;
     transition: all 0.3s;
 }

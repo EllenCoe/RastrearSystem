@@ -42,7 +42,7 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 
 		$scope.setor = setorSelecionado;
 		//$window.open("http://www.google.com", '_blank');
-		$('#myTab a[href="#nav-Cadastro"]').tab('open');
+		//$('#myTab a[href="#nav-Cadastro"]').tab('open');
 	}
 	$scope.limparCampos = function(){
 		$scope.setor = "";
@@ -91,6 +91,8 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		latitude = $("#input-latitude-"+id).val();
 		longitude = $("#input-longitude-"+id).val();
 		
+		
+		
 		if (nome == ""){
 			nome = nome_old;
 		}
@@ -113,6 +115,14 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		$("#span-nome-"+id).text(nome);
 		$("#span-latitude-"+id).text(latitude);
 		$("#span-longitude-"+id).text(longitude);
+		
+		if(nome != nome_old || latitude != latitude_old || longitude != longitude_old){
+			$('#alertSalvar').fadeIn(1000);
+		   setTimeout(function() { 
+			   $('#alertSalvar').fadeOut(1000); 
+			}, 5000);
+		}
+		
 	}
 
 	$scope.excluir = function(id,setorSelecionado) {
@@ -121,7 +131,11 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		});
 
 		cadastrar(null,id,"setor");
-		alert("Setor Deletado");
+		
+		$('#alertExcluir').fadeIn(1000);
+	   setTimeout(function() { 
+		   $('#alertExcluir').fadeOut(1000); 
+	   }, 5000);
 	}
 
 	$scope.cancel = function(id) {
@@ -168,36 +182,25 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		});
 
 
-		// $scope.setores.push($scope.setor);
+		
+		$('#alertCadastrar').fadeIn(1000);
+	   setTimeout(function() { 
+		   $('#alertCadastrar').fadeOut(1000); 
+	   }, 5000);
+		
+		
+		$scope.limparCampos(); 
+	 
+		
+		
+		
+		
+		
+       
 
 
-		alert("Setor Salvo Com Sucesso!");
-        // $scope.limparCampos();
 
-
-
-        /*if ($scope.setor.codigo == undefined) {
-
-
-                   $http.post(urlSetor,$scope.setor).success(function(setor) {
-                       alert("Salvo com Sucesso!");
-                        //$scope.listarSetores();
-                        $scope.limparCampos();
-                   }).error (function (erro) {
-                        alert(erro);
-                    });
-
-                } else {
-
-
-                      $http.put(urlSetor,$scope.setor).success(function(setor) {
-                          alert("Salvo com Sucesso!");
-                          //$scope.listarSetores();
-                          $scope.limparCampos();
-                       }).error (function (erro) {
-                            alert(erro);
-                        });
-                }*/
+    
 				
 
 	}
@@ -211,20 +214,5 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 				
 	}
 		 
-	/*$scope.listarSetores = function(){
-		 
-		 $http.get(urlSetor).success(function (setores){
-			 
-			 	$scope.setores = setores;
-		 }).error(function (erro){
-			 alert(erro)
-		 });}
-	 
-		 
-			
-		
-	 
-	 
-		 $scope.listarSetores();*/
-
+	
 });
