@@ -33,29 +33,30 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 		}
     });
     
+	var arrayDispositivo = $scope.dispositivos = [];
+
+	var dispositivo = function(arrayDispositivo,callback){
+		ref.child("dispositivos").once('value',function (snapshot) {
+
+			feed = [];
+			snapshot.forEach(function (child) {
+				var data = child.val();
+				feed.push(data);				
+			});
+			callback(feed);
+
+		});
+	}
+	dispositivo(arrayDispositivo,function (callback) {
+		for(var i=0;i<=callback.length;i++){
+            arrayDispositivo.push(callback[i]);
+            console.log(arrayDispositivo);
+		}
+    });
+	
 	setTimeout(function(){ $("th").click(); }, 2000);
     
-	// $scope.setores = [{
-    //     codigo: 1,
-    //     nome: 'Egas Moniz',
-    //     latitude: '10.9',
-    //     longitude: '-90'
-    // }, {
-    //     codigo: 2,
-    //     nome: 'Ambulatorio Maria Fernanda',
-    //     latitude: '8.9',
-    //     longitude: '5'
-    // }, {
-    //     codigo: 3,
-    //     nome: 'João de Deus 5º Andar',
-    //     latitude: '9.2',
-    //     longitude: '3'
-    // }, {
-    //     codigo: 4,
-    //     nome: 'João de Deus 8º Andar',
-    //     latitude: '9.0',
-    //     longitude: '3'
-    // }, ];
+	
 	
     $scope.equipamentos = [{
         codigo: 1,
@@ -80,6 +81,11 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
     $scope.selecionaSetor = function(setorSelecionado) {
         $scope.setor = setorSelecionado;
 		$scope.equipamento.setor = setorSelecionado;
+        
+    },
+	 $scope.selecionaDispositivo = function(dispositivoSelecionado) {
+        $scope.dispositivo = dispositivoSelecionado;
+		$scope.equipamento.tag = setorSelecionado;
         
     },
     $scope.limparCampos = function() {
@@ -124,10 +130,15 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 			cadastrar(postData,id,"equipamento");
 		});
 
-
-        $scope.equipamentos.push(postData);
-        // $scope.limparCampos();
-        alert("equipamento Salvo Com Sucesso!");
+		$('#alertCadastrar').fadeIn(1000);
+	   setTimeout(function() { 
+		   $('#alertCadastrar').fadeOut(1000); 
+	   }, 5000);
+		
+		
+		
+        $scope.limparCampos();
+        
         
     },
     $scope.excluir = function() {

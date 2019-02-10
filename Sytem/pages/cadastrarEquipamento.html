@@ -37,11 +37,25 @@
             </div>
             <ul class="list-unstyled components">
                <li>
-                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                  <i class="fas fa-copy"></i>
-                  Páginas
+                  <a href="#pageSubmenuCadastro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  <i class="fas fa-plus-square"></i>
+                  Cadastrar
                   </a>
-                  <ul class="collapse list-unstyled" id="pageSubmenu">
+                  <ul class="collapse list-unstyled" id="pageSubmenuCadastro">
+                     <li>
+                        <a href="cadastrarSetor.html">Setor</a>
+                     </li>
+                     <li>
+                        <a href="cadastrarEquipamento.html">Equipamento</a>
+                     </li>
+                  </ul>
+               </li>
+               <li>
+                  <a href="#pageSubmenuList" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                  <i class="fas fa-table"></i>
+                  Listas
+                  </a>
+                  <ul class="collapse list-unstyled" id="pageSubmenuList">
                      <li>
                         <a href="setores.html">Setores</a>
                      </li>
@@ -52,115 +66,50 @@
                </li>
                <li>
                   <a href="monitoramento.html">
-                  <i class="fas fa-paper-plane"></i>
-                  Monitoramento
+                  <i class="fas fa-map-marker-alt"></i>
+                  Monitor
                   </a>
                </li>
             </ul>
          </nav>
          <!-- Page Content  -->
          <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light bg-full"">
                <div class="container-fluid">
-                  <button type="button" id="sidebarCollapse" class="btn btn-basic">
+                  <button type="button" id="sidebarCollapse" class="btn btn btn-outline-light">
                   <i class="fas fa-align-left"></i>
-                  <span>Menu</span>
+                  <span> Menu </span>
                   </button>
-                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <i class="fas fa-align-justify"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item active">
-                           <a class="nav-link" href="#">Page</a>
-                        </li>
-                     </ul>
-                  </div>
+                  
+				  <h1 class="title">Cadastro de Equipamento</h1>
+
+                  
                </div>
+            
             </nav>
-            <nav>
-               <div class="nav nav-tabs" id="myTab" role="tablist">
-                  <a class="nav-item nav-link active" id="nav-lista-tab" data-toggle="tab" href="#nav-lista" role="tab" aria-controls="nav-lista" aria-selected="true">Lista</a>
-                  <a class="nav-item nav-link" id="nav-Cadastro-tab" data-toggle="tab" href="#nav-Cadastro" role="tab" aria-controls="nav-Cadastro" aria-selected="false">Cadastro</a>
-                  <!--a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a-->
-               </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-               <div class="tab-pane fade show active" id="nav-lista" role="tabpanel" aria-labelledby="nav-lista-tab">
+            
+			<div class="alert alert-success" id="alertCadastrar" style="display:none;" role="alert">
+				  Cadastro realizado com sucesso!
+			</div>
+            
+              
                   <div class="my-3 p-3 bg-white rounded shadow-sm">
-                     <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
-                     <br>
-                     <div class = "container">
-                        <div class="input-group">
-                           <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="fa fa-search"></i></span>
-                           </div>
-                           <input type="text" ng-model = "pesquisaequipamento" class="form-control" id="pesquisa" >
-                        </div>
-                        <br>
-                        <table class="table table-bordered table-hover">
-                           <thead>
-                              <tr>
-                                 <th ng-click="ordenar('codigo')">Código <i class="fa fa-fw fa-sort"></i></th>
-                                 <th ng-click="ordenar('nome')">Nome <i class="fa fa-fw fa-sort"></i></th>
-                                 <th ng-click="ordenar('patrimonio')">Patrimonio<i class="fa fa-fw fa-sort"></i></th>
-                                 <th ng-click="ordenar('marca')">Marca <i class="fa fa-fw fa-sort"></i></th>
-                                 <th ng-click="ordenar('modelo')">Modelo <i class="fa fa-fw fa-sort"></i></th>
-                                 <th ng-click="ordenar('serie')">Serie <i class="fa fa-fw fa-sort"></i></th>
-                                 <th ng-click="ordenar('setor')">Setor <i class="fa fa-fw fa-sort"></i></th>
-                                 <th ng-click="ordenar('tag')">TagId <i class="fa fa-fw fa-sort"></i></th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr dir-paginate = "equipamentosTabela in equipamentos | filter : pesquisaequipamento  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaequipamento(equipamentosTabela)"								>
-                                 <td>{{equipamentosTabela.codigo}}</td>
-                                 <td>{{equipamentosTabela.nome}}</td>
-                                 <td>{{equipamentosTabela.patrimonio}}</td>
-                                 <td>{{equipamentosTabela.marca}}</td>
-                                 <td>{{equipamentosTabela.modelo}}</td>
-                                 <td>{{equipamentosTabela.serie}}</td>
-                                 <td>{{equipamentosTabela.setor.nome}}</td>
-                                 <td>{{equipamentosTabela.tag}}</td>
-                              </tr>
-                              <br>
-                           </tbody>
-                        </table>
-                        <dir-pagination-controls max-size="4" boundary-links="true"></dir-pagination-controls>
-                     </div>
-                  </div>
-               </div>
-               <div class="tab-pane fade" id="nav-Cadastro" role="tabpanel" aria-labelledby="nav-Cadastro-tab">
-                  <div class="my-3 p-3 bg-white rounded shadow-sm">
-                     <h6>
-                     Cadastrar de equipamento
-                     <h6>
+                     
                      <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
                      <br>
                      <form name="customerForm" class="needs-validation" novalidate>
-                        <div class="row">
-                           <div class="col-md-3 mb-3">
-                              <div class="input-group">
-                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Código</span>
-                                 </div>
-                                 <input type="text" ng-model = "equipamento.codigo" class="form-control" id="codigo" readonly>
-                                 <div class="invalid-feedback" style="width: 100%;">
-                                    Codigo ?
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-md-9 mb-3">
-                              <div class="input-group">
-                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Nome</span>
-                                 </div>
-                                 <input type="text" class="form-control" id="nome" placeholder="Nome" ng-model ="equipamento.nome" required>
-                                 <div class="invalid-feedback">
-                                    Preencha o nome do equipamento.
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                        
+						  <div class="input-group mb-3">
+							 <div class="input-group-prepend">
+								<span class="input-group-text">Nome</span>
+							 </div>
+							 <input type="text" class="form-control" id="nome" placeholder="Nome" ng-model ="equipamento.nome" required>
+							 <div class="invalid-feedback">
+								Preencha o nome do equipamento.
+							 </div>
+						  </div>
+                           
+                        
                         <div class="row">
                            <div class="col-md-5 mb-3">
                               <div class="input-group">
@@ -269,8 +218,12 @@
                               <div class="input-group-prepend">
                                  <span class="input-group-text" id="basic-addon1">Nº de Identificação </span>
                               </div>
-                              <input id = "tag_ident" type="text" class="form-control" placeholder="" ng-model = equipamento.tag aria-describedby="basic-addon1">
-                           </div>
+							  <select ng-model ="equipamento.tag"  class="custom-select" id="inputGroupSelect3" 
+                              ng-options = "dispositivo.codigo for dispositivo in dispositivos track by dispositivo.codigo"
+                              >
+							  
+                           </select>
+                             </div>
                         </div>
                         <script type="text/javascript">
                            function toggle_visibility(id) {
@@ -288,7 +241,7 @@
                            <div class="form-group" align = "center">
                               <button type="reset" formnovalidate ng-click = "limparCampos()" class="btn btn-primary"> <i class="fa fa-eraser"></i> Limpar </button>
                               <button type="submit" ng-disabled ="customerForm.$invalid" ng-click =salvar()  class="btn btn-success"> <i class="fa fa-save"></i>  Salvar</button>
-                              <button type="button" formnovalidate ng-click = "excluir()" class="btn btn-danger"> <i class="fa fa-trash"></i>  Delete</button>
+                              
                            </div>
                         </div>
                         <!--hr class="mb-4">
@@ -297,9 +250,7 @@
                   </div>
                </div>
                <!--div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">3</div-->
-            </div>
-            <div class="container-fluid">
-            </div>
+            
          </div>
       </div>
       <!-- Bootstrap core JavaScript
