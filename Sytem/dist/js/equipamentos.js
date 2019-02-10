@@ -73,10 +73,10 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         },
         tag: 1
     }];
-    $scope.selecionaequipamento = function(equipamentoSelecionado) {
+    $scope.selecionaEquipamento = function(equipamentoSelecionado) {
         $scope.equipamento = equipamentoSelecionado;
         
-        $('#myTab a[href="#nav-Cadastro"]').tab('open');
+        //$('#myTab a[href="#nav-Cadastro"]').tab('open');
     },
     $scope.selecionaSetor = function(setorSelecionado) {
         $scope.setor = setorSelecionado;
