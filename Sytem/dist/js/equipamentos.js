@@ -113,7 +113,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
                 serie: serie,
                 modelo: modelo,
                 patrimonio: patrimonio,
-                tag_ident: tag_ident,
+                dispositivo: tag_ident,
                 setor_nome: setor_nome,
                 setor:setor
             };
@@ -158,6 +158,14 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 
         $("#span-dispositivo-"+id).hide();
         $("#input-dispositivo-"+id).show();
+
+        setor_nome = $("#span-setor-"+id).text();
+        console.log(setor_nome);
+        $("option").each(function(){
+            if ($(this).text() == setor_nome){
+                $("#setor_select-"+id).val($(this).val());
+            }
+        });
     },
 
     $scope.alterar = function(id) {
@@ -199,6 +207,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         setor = parseInt(setor);
         setor_nome = $("#setor_select-"+id+" option:selected").text();
         dispositivo = $("#input-dispositivo-"+id).val();
+
 
 
         if (nome == "" ){

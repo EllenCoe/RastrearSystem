@@ -30,53 +30,60 @@
       <div class="wrapper">
          <!-- Sidebar  -->
          <nav id="sidebar">
-            <div class="sidebar-header">
-               <h3>Menu</h3>
-               <strong>MN</strong>
-            </div>
-            <ul class="list-unstyled components">
-               <li>
-                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                  <i class="fas fa-copy"></i>
-                  Páginas
-                  </a>
-                  <ul class="collapse list-unstyled" id="pageSubmenu">
-                     <li>
-                        <a href="setores.html">Setores</a>
-                     </li>
-                     <li>
-                        <a href="equipamentos.html">Equipamentos</a>
-                     </li>
-                  </ul>
-               </li>
-               <li>
-                  <a href="monitoramento.html">
-                  <i class="fas fa-paper-plane"></i>
-                  Monitoramento
-                  </a>
-               </li>
-            </ul>
-         </nav>
-         <!-- Page Content  -->
-         <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-               <div class="container-fluid">
-                  <button type="button" id="sidebarCollapse" class="btn btn-basic">
-                  <i class="fas fa-align-left"></i>
-                  <span>Menu</span>
-                  </button>
-                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <i class="fas fa-align-justify"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item active">
-                           <a class="nav-link" href="#">Page</a>
+               <div class="sidebar-header">
+                  <h3>Menu</h3>
+                  <strong>MN</strong>
+               </div>
+               <ul class="list-unstyled components">
+                  <li>
+                     <a href="#pageSubmenuCadastro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" >
+                     <i class="fas fa-plus-square"></i>
+                     Cadastrar
+                     </a>
+                     <ul class="collapse list-unstyled" id="pageSubmenuCadastro">
+                        <li>
+                           <a href="cadastrarSetor.html">Setor</a>
+                        </li>
+                        <li>
+                           <a href="cadastrarEquipamento.html">Equipamento</a>
                         </li>
                      </ul>
-                  </div>
-               </div>
+                  </li>
+                  <li>
+                     <a href="#pageSubmenuList" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                     <i class="fas fa-table"></i>
+                     Listas
+                     </a>
+                     <ul class="collapse list-unstyled" id="pageSubmenuList">
+                        <li>
+                           <a href="setores.html">Setores</a>
+                        </li>
+                        <li>
+                           <a href="equipamentos.html">Equipamentos</a>
+                        </li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="monitoramento.html">
+                 <i class="fas fa-map-marker-alt"></i>
+                     Monitor
+                     </a>
+                  </li>
+               </ul>
             </nav>
+            <!-- Page Content  -->
+            <div id="content">
+               <nav class="navbar navbar-expand-lg navbar-light bg-full">
+                  <div class="container-fluid">
+                     <button type="button" id="sidebarCollapse" class="btn btn btn-outline-light">
+                     <i class="fas fa-align-left"></i>
+                     <span> Menu </span>
+                     </button>
+                    
+                <h1 class="title">Lista de Equipamentos</h1>
+   
+                  </div>
+               </nav>
             
             
             <div class="my-3 p-3 bg-white rounded shadow-sm">

@@ -121,41 +121,60 @@
 						  </tr>
 					   </thead>
 					   <tbody>
-						  <tr dir-paginate = "equipamentosTabela in equipamentos | filter : pesquisaequipamento  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaEquipamento(equipamentosTabela)"								>
-                     <td >
-                        <span id = "span-nome-{{equipamentosTabela.codigo}}">{{equipamentosTabela.nome}}</span> 
-                        <input id = "input-nome-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="nome" placeholder="{{equipamentosTabela.nome}}"> 
-                     </td>
-                     <td>
-                        <span id = "span-patrimonio-{{equipamentosTabela.codigo}}">{{equipamentosTabela.patrimonio}}</span> 
-                        <input id = "input-patrimonio-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="patrimonio" placeholder="{{equipamentosTabela.patrimonio}}"> 
-                     </td>
-                     <td>
-                        <span id = "span-marca-{{equipamentosTabela.codigo}}">{{equipamentosTabela.marca}}</span> 
-                        <input id = "input-marca-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="marca" placeholder="{{equipamentosTabela.marca}}"> 
-                     </td>
-                     <td>
-                        <span id = "span-modelo-{{equipamentosTabela.codigo}}">{{equipamentosTabela.modelo}}</span> 
-                        <input id = "input-modelo-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="modelo" placeholder="{{equipamentosTabela.modelo}}"> 
-                     </td>
-                     <td>
-                        <span id = "span-serie-{{equipamentosTabela.codigo}}">{{equipamentosTabela.serie}}</span> 
-                        <input id = "input-serie-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="serie" placeholder="{{equipamentosTabela.serie}}"> 
-                     </td>
+						  <tr dir-paginate = "equipamentosTabela in equipamentos | filter : pesquisaequipamento  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaEquipamento(equipamentosTabela">
+                        <td>
+                           <div style="text-align:center">
+                              <span id = "span-nome-{{equipamentosTabela.codigo}}">{{equipamentosTabela.nome}}</span> 
+                              <input id = "input-nome-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="nome" placeholder="{{equipamentosTabela.nome}}"> 
+                           </div>
+                        </td>
+                        <td>
+                           <div style="text-align:center">
+                              <span id = "span-patrimonio-{{equipamentosTabela.codigo}}">{{equipamentosTabela.patrimonio}}</span> 
+                              <input id = "input-patrimonio-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="patrimonio" placeholder="{{equipamentosTabela.patrimonio}}"> 
+                           </div>                        
+                        </td>
+                        <td>
+                           <div style="text-align:center">
+                              <span id = "span-marca-{{equipamentosTabela.codigo}}">{{equipamentosTabela.marca}}</span> 
+                              <input id = "input-marca-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="marca" placeholder="{{equipamentosTabela.marca}}"> 
+                           </div>
+                        </td>
+                        <td>
+                           <div style="text-align:center">
+                              <span id = "span-modelo-{{equipamentosTabela.codigo}}">{{equipamentosTabela.modelo}}</span> 
+                              <input id = "input-modelo-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="modelo" placeholder="{{equipamentosTabela.modelo}}"> 
+                           </div>
+                        </td>
+                        <td>
+                           <div style="text-align:center">
+                              <span id = "span-serie-{{equipamentosTabela.codigo}}">{{equipamentosTabela.serie}}</span> 
+                              <input id = "input-serie-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="serie" placeholder="{{equipamentosTabela.serie}}"> 
+                           </div>
+                        </td>
+                        <td>
+                           <div style="text-align:center">
+                              <span id = "span-setor-{{equipamentosTabela.codigo}}">{{equipamentosTabela.setor_nome}}</span> 
+                              <select style = "display: none;width: 150px" ng-model ="equipamento.setor"  class="custom-select" id="setor_select-{{equipamentosTabela.codigo}}" ng-options = "setor.nome for setor in setores track by setor.codigo"></select>
+                           </div>
+                        </td>
+                        <td>
+                           <div style="text-align:center">
+                                 <span id = "span-dispositivo-{{equipamentosTabela.codigo}}">{{equipamentosTabela.dispositivo}}</span> 
+                                 <input id = "input-dispositivo-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="number" min="1"  id="dispositivo" placeholder="{{equipamentosTabela.dispositivo}}">
+                           </div>
+                           </td>
 							 <td>
-                        <span id = "span-setor-{{equipamentosTabela.codigo}}">{{equipamentosTabela.setor_nome}}</span> 
-                         <select style = "display: none;width: 150px" ng-model ="equipamento.setor"  class="custom-select" id="setor_select-{{equipamentosTabela.codigo}}" ng-options = "setor.nome for setor in setores track by setor.codigo"></select>
-                     </td>
-							 <td>
-                           <span id = "span-dispositivo-{{equipamentosTabela.codigo}}">{{equipamentosTabela.tag_ident}}</span> 
-                           <input id = "input-dispositivo-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="number" min="1"  id="dispositivo" placeholder="{{equipamentosTabela.tag_ident}}">
-                      </td>
-							 <td>
-							<button type="button" id = "editar-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "editar(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-edit"></i>
-							<button style="display:none" type="button" id = "alterar-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "alterar(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="far fa-save"></i>
-							<button style="display:none" type="button" id = "cancel-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "cancel(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-times"></i>
+                         <div style = "width: 90px;text-align: center;">
+                           <button type="button" id = "editar-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "editar(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-edit"></i>
+                           <button style="display:none" type="button" id = "alterar-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "alterar(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="far fa-save"></i>
+                           <button style="display:none" type="button" id = "cancel-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "cancel(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-times"></i>
+                        </div>
 						 </td>
-						 <td><button type="button" id = "excluir-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "excluir(equipamentosTabela.codigo,equipamentosTabela)"  class="btn btn-outline-secondary">  <i class="fas fa-trash"></i></td>
+						 <td>
+                      <div style="text-align: center;">
+                        <button type="button" id = "excluir-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "excluir(equipamentosTabela.codigo,equipamentosTabela)"  class="btn btn-outline-secondary">  <i class="fas fa-trash"></i></td>
+                      </div>
 						  </tr>
 						  <br>
 					   </tbody>
