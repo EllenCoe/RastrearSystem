@@ -9,16 +9,73 @@ function delete_firebase(id,tabela){
 	ref.child('/'+ tabela + '/' + id).set(postData);
 }
 
+// if (typeof(Number.prototype.toRad) === "undefined") {
+// 	Number.prototype.toRad = function() {
+// 		return Math.abs(this * Math.PI / 180);
+// 	}
+// }
+
+
+function toRad(number){
+	return Math.abs(number * Math.PI / 180);
+}
+
+function calcula_alguma_coisa(latitude,longitude,arraySetor){
+		var lat2 = latitude;
+		var lon2 = longitude;
+		for(var j = 0; j<arraySetor.length;j++){
+		
+			
+			var lat1 = arraySetor[j].latitude; 
+			var lon1 = arraySetor[j].longitude; 
+
+			// alert(lat2);
+			// alert(lon2);
+
+			// alert(lat1);
+			// alert(lon1);
+			
+			
+			var R = 6371; // km 
+			//has a problem with the .toRad() method below.
+			var x1 = lat2-lat1;
+			var dLat = toRad(x1);
+			var x2 = lon2-lon1;
+			var dLon = toRad(x2);  
+			var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+							Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+							Math.sin(dLon/2) * Math.sin(dLon/2);  
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			var d = (R * c)*1000;
+			if(d<=10){
+				var result = arraySetor[j].nome;
+			}
+			else{
+				result = "Não encontrado";
+			}
+	}
+	return result;
+	// console.log(d);
+	// if(d<=10){
+	// 	alert("está no setor"+arraySetor[j].nome);
+	// 	return arraySetor[j].nome;
+	// }
+	// // console.log(arraySetor[j].nome);
+	// return "Não encontrado";
+}
+
 
 var monitoramentoModulo = angular.module('monitoramentoController',['dirPagination']);
 
 monitoramentoModulo.controller("monitoramentoController", function($scope, $http,$window){
 
 
-	var arraySetor = $scope.setores = [];
 
-	var setor = function(arraySetor,callback){
-		ref.child("setor").once('value',function (snapshot) {
+	var log = $scope.monitoramento = [];
+	var arrayDispositivo = [];
+
+	var dispositivos = function(arrayDispositivo,callback){
+		ref.child("dispositivos").once('value',function (snapshot) {
 			feed = [];
 			snapshot.forEach(function (child) {
 				var data = child.val();
@@ -28,203 +85,87 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 
 		});
 	}
-	setor(arraySetor,function (callback) {
+	dispositivos(arrayDispositivo,function (callback) {
 		for(var i=0;i<callback.length;i++){
-			arraySetor.push(callback[i]);
+			arrayDispositivo.push(callback[i]);
 		}
+		var arrayEquipamento = [];
+
+		var equipamento = function(arrayDispositivo,callback){
+			ref.child("equipamento").once('value',function (snapshot) {
+				feed = [];
+				snapshot.forEach(function (child) {
+					var data = child.val();
+					feed.push(data);
+				});
+				callback(feed);
+
+			});
+		}
+		equipamento(arrayEquipamento,function (callback) {
+			for(var i=0;i<callback.length;i++){
+				arrayEquipamento.push(callback[i]);
+			}
+			var arraySetor = $scope.setores = [];
+
+			var setor = function(arraySetor,callback){
+				ref.child("setor").once('value',function (snapshot) {
+					feed = [];
+					snapshot.forEach(function (child) {
+						var data = child.val();
+						feed.push(data);
+					});
+					callback(feed);
+
+				});
+			}
+
+			setor(arraySetor,function (callback) {
+				for(var i=0;i<callback.length;i++){
+					arraySetor.push(callback[i]);
+				}
+				// var log = [];
+				for(var i=0;i<arrayEquipamento.length;i++){
+					aux_dispositivo = arrayDispositivo.filter(function(value,index,arr){
+						return value.codigo == arrayEquipamento[i].dispositivo;
+					});
+
+					aux_setor = arraySetor.filter(function(value,index,arr){
+						return value.codigo == arrayEquipamento[i].setor;
+					});
+					if (arrayDispositivo[0] !== undefined){
+						setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
+						log_aux = {
+							data: aux_dispositivo[0].Data,
+							latitude_dispositivo: aux_dispositivo[0].Latitude,
+							longitude_dispositivo: aux_dispositivo[0].Longitude,
+							nome: arrayEquipamento[i].nome,
+							setor_nome: arrayEquipamento[i].setor_nome,
+							setor_id: arrayEquipamento[0].setor,
+							latitude_setor: aux_setor[0].latitude,
+							longitude_setor: aux_setor[0].longitude,
+							setor_atual: setor_atual
+						}
+						
+						log.push(log_aux);
+						console.log(log_aux);
+					}
+					
+				}
+			});
+		});
 	});
+
+
 
 	setTimeout(function(){ $("th").click(); }, 2000);
 
 	$("#lista td").attr("style","");
 
-	$scope.selecionaSetor = function(setorSelecionado){
 
-		$scope.setor = setorSelecionado;
-		//$window.open("http://www.google.com", '_blank');
-		$('#myTab a[href="#nav-Cadastro"]').tab('open');
-	}
-	$scope.limparCampos = function(){
-		$scope.setor = "";
-	}
-
-	$scope.editar = function(id) {
-
-
-		$("#editar-"+id).hide();
-		$("#alterar-"+id).show();
-		$("#cancel-"+id).show();
-
-		$("#span-nome-"+id).hide();
-		$("#input-nome-"+id).show();
-
-		$("#span-latitude-"+id).hide();
-		$("#input-latitude-"+id).show();
-
-		$("#span-longitude-"+id).hide();
-		$("#input-longitude-"+id).show();
-	}
-
-	$scope.alterar = function(id) {
-
-		nome_old = $("#span-nome-"+id).text();
-		latitude_old = $("#span-latitude-"+id).text();
-		longitude_old = $("#span-longitude-"+id).text();
-
-		
-
-		$("#cancel-"+id).hide();
-		$("#alterar-"+id).hide();
-		$("#editar-"+id).show();
-		
-		$("#span-nome-"+id).show();
-		$("#input-nome-"+id).hide();
-
-		$("#span-latitude-"+id).show();
-		$("#input-latitude-"+id).hide();
-
-		$("#span-longitude-"+id).show();
-		$("#input-longitude-"+id).hide();
-
-
-		nome = $("#input-nome-"+id).val();
-		latitude = $("#input-latitude-"+id).val();
-		longitude = $("#input-longitude-"+id).val();
-		
-		if (nome == ""){
-			nome = nome_old;
-		}
-		if (latitude == ""){
-			latitude = latitude_old;
-		}
-		if (longitude == ""){
-			longitude = longitude_old;
-		}
-		postData = {
-			codigo: id,
-			nome: nome,
-			latitude: latitude,
-			longitude: longitude
-		};
-		cadastrar(postData,id,"setor");
-
-		$scope.cancel(id);
-
-		$("#span-nome-"+id).text(nome);
-		$("#span-latitude-"+id).text(latitude);
-		$("#span-longitude-"+id).text(longitude);
-	}
-
-	$scope.excluir = function(id,setorSelecionado) {
-		$scope.setores = $scope.setores.filter(function(value, index, arr){
-			return value.codigo != id;
-		});
-
-		cadastrar(null,id,"setor");
-		alert("Setor Deletado");
-	}
-
-	$scope.cancel = function(id) {
-		$("#cancel-"+id).hide();
-		$("#alterar-"+id).hide();
-		$("#editar-"+id).show();
-		
-		$("#span-nome-"+id).show();
-		$("#input-nome-"+id).hide();
-
-		$("#span-latitude-"+id).show();
-		$("#input-latitude-"+id).hide();
-
-		$("#span-longitude-"+id).show();
-		$("#input-longitude-"+id).hide();
-	}
-			
-	$scope.salvar = function() {
-
-
-		nome = $("#nome").val();
-		latitude = $("#latitude").val();
-		longitude = $("#longitude").val();
-
-
-		ref.child("setor").once('value', function(snapshot) {
-			if (!(snapshot.exists())){
-				id = 1;
-			}
-			else{
-				json = snapshot.val();
-				id = Object.keys(json).sort().pop();
-                id = parseInt(id);
-				id = id + 1;
-			}
-
-            postData = {
-                codigo: id,
-                nome: nome,
-                latitude: latitude,
-                longitude: longitude
-        };
-			cadastrar(postData,id,"setor");
-		});
-
-
-		// $scope.setores.push($scope.setor);
-
-
-		alert("Setor Salvo Com Sucesso!");
-        // $scope.limparCampos();
-
-
-
-        /*if ($scope.setor.codigo == undefined) {
-
-
-                   $http.post(urlSetor,$scope.setor).success(function(setor) {
-                       alert("Salvo com Sucesso!");
-                        //$scope.listarSetores();
-                        $scope.limparCampos();
-                   }).error (function (erro) {
-                        alert(erro);
-                    });
-
-                } else {
-
-
-                      $http.put(urlSetor,$scope.setor).success(function(setor) {
-                          alert("Salvo com Sucesso!");
-                          //$scope.listarSetores();
-                          $scope.limparCampos();
-                       }).error (function (erro) {
-                            alert(erro);
-                        });
-                }*/
-				
-
-	}
-	
 	$scope.ordenar = function(keyname){
-		
 		$scope.sortKey = keyname;
-				
 		$scope.reverse = !$scope.reverse;
-				
-				
 	}
-		 
-	/*$scope.listarSetores = function(){
-		 
-		 $http.get(urlSetor).success(function (setores){
-			 
-			 	$scope.setores = setores;
-		 }).error(function (erro){
-			 alert(erro)
-		 });}
-	 
-		 
-			
-		
-	 
-	 
-		 $scope.listarSetores();*/
 
 });

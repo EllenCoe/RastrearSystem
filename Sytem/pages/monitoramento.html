@@ -111,11 +111,11 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr dir-paginate = "setoresTabela in setores | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaequipamento(equipamentosTabela)"								>
-                              <td>{{setoresTabela.data}}</td>
-                              <td>{{equipamentosTabela.nome}}</td>
-                              <td>{{equipamentosTabela.setor}}</td>
-                              <td>{{setoresTabela.longitude}}</td>
+                           <tr dir-paginate = "monitoramentoTabelas in monitoramento | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaequipamento(equipamentosTabela)"								>
+                              <td>{{monitoramentoTabelas.data}}</td>
+                              <td>{{monitoramentoTabelas.nome}}</td>
+                              <td>{{monitoramentoTabelas.setor_nome}}</td>
+                              <td>{{monitoramentoTabelas.setor_atual}}</td>
                               <td><i class="fas fa-circle"></i></td>
                               <td><button type="button" formnovalidate ng-click = "excluir()"  class="btn btn-outline-secondary">  <i class="fas fa-info"></i></td>
                            </tr>
