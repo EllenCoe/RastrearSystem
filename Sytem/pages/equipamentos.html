@@ -161,7 +161,7 @@
                         <td>
                            <div style="text-align:center">
                                  <span id = "span-dispositivo-{{equipamentosTabela.codigo}}">{{equipamentosTabela.dispositivo}}</span> 
-                                 <input id = "input-dispositivo-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="number" min="1"  id="dispositivo" placeholder="{{equipamentosTabela.dispositivo}}">
+                                 <input id = "input-dispositivo-{{equipamentosTabela.codigo}}" style = "display:none;width:102px;" value = "" type="number" min="0"  id="dispositivo" placeholder="{{equipamentosTabela.dispositivo}}">
                            </div>
                            </td>
 							 <td>
@@ -180,6 +180,7 @@
 					   </tbody>
 					</table>
 					<dir-pagination-controls max-size="4" boundary-links="true"></dir-pagination-controls>
+					<div class="loader" id= "loader" ></div>
 				 </div>
 			  </div>
                

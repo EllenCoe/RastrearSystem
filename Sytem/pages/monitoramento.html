@@ -6,7 +6,7 @@
       <meta name="description" content="">
       <meta name="author" content="">
       <link rel="icon" href="../favicon.png">
-      <title>Setores</title>
+      <title>Monitoramento</title>
       <!-- Bootstrap core CSS -->
       <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" href="style4.css">
@@ -27,7 +27,8 @@
 
    </head>
    <body class="bg-light" ng-controller = "monitoramentoController">
-      <div class="wrapper">
+
+      <div class="wrapper" >
          <!-- Sidebar  -->
          <nav id="sidebar">
                <div class="sidebar-header">
@@ -80,13 +81,16 @@
                      <span> Menu </span>
                      </button>
                     
-                <h1 class="title">Lista de Equipamentos</h1>
+                <h1 class="title">Monitoramento</h1>
    
                   </div>
                </nav>
             
             
             <div class="my-3 p-3 bg-white rounded shadow-sm">
+			
+				
+				
                <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
                <br>
                <div class = "container">
@@ -94,7 +98,7 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                      </div>
-                     <input type="text" ng-model = "pesquisaSetor" class="form-control" id="pesquisa" >
+                     <input type="text" ng-model = "pesquisaMonitoramento" class="form-control" id="pesquisa" >
                   </div>
                   <br>
                   <div class="tab-content" id="nav-tabContent">
@@ -111,13 +115,13 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr dir-paginate = "monitoramentoTabelas in monitoramento | filter : pesquisaSetor  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "selecionaequipamento(equipamentosTabela)"								>
+                           <tr dir-paginate = "monitoramentoTabelas in monitoramentos | filter : pesquisaMonitoramento  |itemsPerPage:4 | orderBy:sortKey:reverse" ng-click = "seleciona(monitoramentoTabelas)">
                               <td>{{monitoramentoTabelas.data}}</td>
                               <td>{{monitoramentoTabelas.nome}}</td>
                               <td>{{monitoramentoTabelas.setor_nome}}</td>
                               <td>{{monitoramentoTabelas.setor_atual}}</td>
                               <td><i class="fas fa-circle"></i></td>
-                              <td><button type="button" formnovalidate ng-click = "excluir()"  class="btn btn-outline-secondary">  <i class="fas fa-info"></i></td>
+                              <td><button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target=".bd-table-modal-lg" ng-click = "detalhar(monitoramentoTabelas)">  <i class="fas fa-info"></i></td>
                            </tr>
                            <br>
                         </tbody>
@@ -125,6 +129,106 @@
 
                   <dir-pagination-controls max-size="4" boundary-links="true"></dir-pagination-controls>
                </div>
+			   
+			   <div class="loader" id= "loader" >
+			   </div>
+				<div class="modal fade bd-table-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title">Detalhes do Equipamento</h5>
+                                    <button type="button" class="close" data-dismiss="modal"  aria-label="Fechar"> 
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class = "container">
+                                    <br>
+									<form name="customerForm" >
+
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Nome</span>
+											</div>
+											<input type="text" class="form-control" id="nome"  type="text"  id="nome" placeholder="{{monitoramento.nome}}" readonly>
+										</div>
+										
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Marca</span>
+											</div>
+											<input type="text" class="form-control" type="text"  id="marca" placeholder="{{monitoramento_equipamento.marca}}" readonly>
+										</div>
+										
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Modelo</span>
+											</div>
+											<input type="text" class="form-control" id="nome"  type="text"  id="modelo" placeholder="{{monitoramento_equipamento.modelo}}" readonly>
+										</div>
+										
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Setor de Origem</span>
+											</div>
+											<input type="text" class="form-control" type="text"  id="nome" placeholder="{{monitoramento.setor_nome}}" readonly>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-4 mb-3">
+											  <div class="input-group">
+												 <div class="input-group-prepend">
+													<span class="input-group-text">Patrimônio</span>
+												 </div>
+												 <input type="text" class="form-control" id="modelo" placeholder="{{monitoramento_equipamento.patrimonio}}"  readonly>
+						
+											  </div>
+										   </div>
+										   <div class="col-md-4 mb-3">
+											  <div class="input-group">
+												 <div class="input-group-prepend">
+													<span class="input-group-text">Serie</span>
+												 </div>
+												 <input type="text"  class="form-control" placeholder="{{monitoramento_equipamento.serie}} " id="serie" readonly>
+											  </div>
+										   </div>
+										   <div class="col-md-4 mb-3">
+											  <div class="input-group">
+												 <div class="input-group-prepend">
+													<span class="input-group-text">Dispositivo</span>
+												 </div>
+												 <input type="text" class="form-control" id="dispositivo" placeholder="{{monitoramento_equipamento.dispositivo}}"  readonly>
+						
+											  </div>
+										   </div>
+										</div>
+															
+										<h6 class="border-bottom border-gray pb-2 mb-0"></h6>
+										<h5 class="modal-title">Detalhes do Setor Atual</h5>
+										<br>
+										<div class="row">
+										   <div class="col-md-6 mb-3">
+											  <div class="input-group">
+												 <div class="input-group-prepend">
+													<span class="input-group-text">Latitude</span>
+												 </div>
+												 <input type="text"  class="form-control" placeholder="{{monitoramento.latitude_dispositivo}} " id="nome" readonly>
+											  </div>
+										   </div>
+										   <div class="col-md-6 mb-3">
+											  <div class="input-group">
+												 <div class="input-group-prepend">
+													<span class="input-group-text">Longitude</span>
+												 </div>
+												 <input type="text" class="form-control" id="modelo" placeholder="{{monitoramento.longitude_dispositivo}}"  readonly>
+						
+											  </div>
+										   </div>
+										</div>
+								 </form>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                   
                
                   

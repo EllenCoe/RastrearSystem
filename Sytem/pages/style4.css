@@ -18,7 +18,7 @@ p {
 h,
 
 h1.title {
-	font-size: 1.8rem; 
+	font-size: 1.6rem; 
 	color: #49ab81;}
 
 a,
@@ -214,7 +214,34 @@ a.article:hover {
 #foo {
 	display: block;
 		}
-		
+
+.frameReload{
+	
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	
+	background-color: lightblue;
+	border: 1px solid black;
+	}
+
+.loader {
+  margin-left: auto;
+  margin-right: auto;
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #398564;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @media (max-width: 768px) {
     #sidebar {
         min-width: 80px;

@@ -13,7 +13,9 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 
 
     var arraySetor = $scope.setores = [];
-
+	
+	$("#loader").show();
+	
     var setor = function(arraySetor,callback){
         ref.child("setor").once('value',function (snapshot) {
 
@@ -55,11 +57,12 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         }
         $("th").click();
     });
-
+		
     
     setTimeout(function(){ $("th").click(); }, 3000);
 
-
+	if(arrayEquipamento != null){ $("#loader").hide()};
+	
     $scope.selecionaEquipamento = function(equipamentoSelecionado) {
         $scope.equipamento = equipamentoSelecionado;
         
@@ -91,7 +94,8 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         setor_nome = $('#inputGroupSelect3 option:selected').text();
 
         if (tag_ident == "" || tag_ident == undefined){
-            tag_ident = false;
+			tag_ident = false;
+            tag_ident = "0";
         }
         //else, cadastra na tabela de log
 
@@ -315,4 +319,6 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         alert(erro)
         });}
         $scope.listarequipamentos();*/
+		
+		
 });

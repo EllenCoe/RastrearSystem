@@ -23,6 +23,7 @@ function toRad(number){
 function calcula_alguma_coisa(latitude,longitude,arraySetor){
 		var lat2 = latitude;
 		var lon2 = longitude;
+		var arrayDistancia = [];
 		for(var j = 0; j<arraySetor.length;j++){
 		
 			
@@ -47,13 +48,24 @@ function calcula_alguma_coisa(latitude,longitude,arraySetor){
 							Math.sin(dLon/2) * Math.sin(dLon/2);  
 			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 			var d = (R * c)*1000;
-			if(d<=10){
-				var result = arraySetor[j].nome;
+			//console.log(d);
+			arrayDistancia.push(d);	
+			//console.log(arrayDistancia);
+	}
+	
+	
+			var minimaDistancia = Math.min.apply(Math,arrayDistancia);
+			posicao = arrayDistancia.indexOf(minimaDistancia);
+				
+				//console.log(posicao);
+				
+			if(minimaDistancia<=5){
+				
+				var result = arraySetor[posicao].nome;
 			}
 			else{
-				result = "Não encontrado";
+			result = "Não cadastrado. Setor mais próximo: " + arraySetor[posicao].nome;
 			}
-	}
 	return result;
 	// console.log(d);
 	// if(d<=10){
@@ -71,9 +83,13 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 
 
 
-	var log = $scope.monitoramento = [];
+	var log = $scope.monitoramentos = [];
 	var arrayDispositivo = [];
+	var arrayEquipamento = [];
 
+	
+	$("#loader").show();
+	
 	var dispositivos = function(arrayDispositivo,callback){
 		ref.child("dispositivos").once('value',function (snapshot) {
 			feed = [];
@@ -89,8 +105,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		for(var i=0;i<callback.length;i++){
 			arrayDispositivo.push(callback[i]);
 		}
-		var arrayEquipamento = [];
-
+		
 		var equipamento = function(arrayDispositivo,callback){
 			ref.child("equipamento").once('value',function (snapshot) {
 				feed = [];
@@ -124,22 +139,28 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 				for(var i=0;i<callback.length;i++){
 					arraySetor.push(callback[i]);
 				}
+				
 				// var log = [];
+				var value = [];
+				
 				for(var i=0;i<arrayEquipamento.length;i++){
 					aux_dispositivo = arrayDispositivo.filter(function(value,index,arr){
+						
 						return value.codigo == arrayEquipamento[i].dispositivo;
 					});
 
 					aux_setor = arraySetor.filter(function(value,index,arr){
 						return value.codigo == arrayEquipamento[i].setor;
 					});
-					if (arrayDispositivo[0] !== undefined){
+					
+					if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
 						setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
 						log_aux = {
 							data: aux_dispositivo[0].Data,
 							latitude_dispositivo: aux_dispositivo[0].Latitude,
 							longitude_dispositivo: aux_dispositivo[0].Longitude,
 							nome: arrayEquipamento[i].nome,
+							equipamento_id: arrayEquipamento[i].codigo,
 							setor_nome: arrayEquipamento[i].setor_nome,
 							setor_id: arrayEquipamento[0].setor,
 							latitude_setor: aux_setor[0].latitude,
@@ -148,16 +169,29 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 						}
 						
 						log.push(log_aux);
-						console.log(log_aux);
+						cadastrar(log_aux,log_aux.equipamento_id,"log");
+						
 					}
 					
 				}
+				if(log != null){ $("#loader").hide()};
 			});
 		});
 	});
+	
+	
+	
+	$scope.detalhar = function(monitoramentoSelecionado) {
+		
+		$scope.monitoramento = monitoramentoSelecionado;
+		
+		var id = $scope.monitoramento.equipamento_id;
+		var filtro = arrayEquipamento.filter( function(item) { return item.codigo == id } );
+		
+		
+		$scope.monitoramento_equipamento = filtro[0];
 
-
-
+	}
 	setTimeout(function(){ $("th").click(); }, 2000);
 
 	$("#lista td").attr("style","");
@@ -167,5 +201,9 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		$scope.sortKey = keyname;
 		$scope.reverse = !$scope.reverse;
 	}
+	
+	setInterval(function(){ 
+		$window.location.reload();
+		}, 60000);
 
 });
