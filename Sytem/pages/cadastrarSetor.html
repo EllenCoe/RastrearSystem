@@ -26,34 +26,6 @@
       <script src="../dist/js/dirPagination.js"></script>
 
 
-
-      <script>
-      
-
-      var arraySetor = [];
-      
-      var setor = function(arraySetor,callback){
-         ref.child("setor").once('value',function (snapshot) {
-
-            feed = [];
-            snapshot.forEach(function (child) {
-               var data = child.val();
-               feed.push(data);				
-            });
-            callback(feed);
-
-         });
-      }
-      setor(arraySetor,function (callback) {
-         for(var i=0;i<=callback.length;i++){
-            arraySetor.push(callback[i]);
-         }
-      });
-
-      console.log(arraySetor);
-
-      </script>
-
    </head>
    <body class="bg-light" ng-controller = "setoresController">
       <div class="wrapper">

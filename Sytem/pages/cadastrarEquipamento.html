@@ -218,9 +218,7 @@
                               <div class="input-group-prepend">
                                  <span class="input-group-text" id="basic-addon1">Nº de Identificação </span>
                               </div>
-							  <select ng-model ="equipamento.tag"  class="custom-select" id="inputGroupSelect3" 
-                              ng-options = "dispositivo.codigo for dispositivo in dispositivos track by dispositivo.codigo"
-                              >
+                              <input type="number" min="1" ng-model = "equipamento.tag" class="form-control" id="tag">
 							  
                            </select>
                              </div>

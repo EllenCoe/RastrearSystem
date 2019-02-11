@@ -32,6 +32,7 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		for(var i=0;i<callback.length;i++){
 			arraySetor.push(callback[i]);
 		}
+		$("th").click();
 	});
 
 	setTimeout(function(){ $("th").click(); }, 2000);
