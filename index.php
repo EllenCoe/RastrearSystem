@@ -1,1 +1,1 @@
-<?php include_once("Sytem\pages\index.html"); ?>
+<?php include_once("Sytem/pages/index.html"); ?>
