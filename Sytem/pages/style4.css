@@ -15,6 +15,9 @@ p {
     line-height: 1.7em;
     color: #999;
 }
+.mb-3, .my-3 {
+    width: min-content;
+}
 h,
 
 h1.title {
