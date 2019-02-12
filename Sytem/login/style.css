@@ -4,7 +4,7 @@
 body, html {
 	height: 100%;
 	background-repeat: no-repeat;    /*background-image: linear-gradient(rgb(12, 97, 33),rgb(104, 145, 162));*/
-	background:black;
+	background:rgb(49, 114, 86);
 	position: relative;
 }
 #login-box {
@@ -14,8 +14,8 @@ body, html {
 	transform: translateX(-50%);
 	width: 350px;
 	margin: 0 auto;
-	border: 1px solid black;
-	background: rgba(48, 46, 45, 1);
+	border: 1px solid white;
+	background: #398564;
 	min-height: 250px;
 	padding: 20px;
 	z-index: 9999;
