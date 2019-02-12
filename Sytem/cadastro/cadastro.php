@@ -50,11 +50,11 @@ else{
     echo "Falta do campo senha";
     exit;
 }
-if (isset($_POST['company'])){
-    $company = $_POST['company'];
+if (isset($_POST['group'])){
+    $group = $_POST['group'];
 }
 else{
-    echo "Falta do campo company";
+    echo "Falta do campo group";
     exit;
 }
 if (isset($_POST['email'])){
@@ -76,7 +76,7 @@ $db = new DatabaseMysql($config->database->login,$config->database->server,$conf
 $verificador = md5($login);
 
 
-$sql = "INSERT INTO usuarios (nome_completo,login,senha,companhia,email,verificado) VALUES ('$nome','$login','$pass','$company','$email','$verificador')";
+$sql = "INSERT INTO usuarios (nome_completo,login,senha,companhia,email,verificado) VALUES ('$nome','$login','$pass','$group','$email','$verificador')";
 
 if($db->insert($sql,0)){
     $msg = "<a href = '$config->host/Sensors/bases/authenticationMail.php?auth=$verificador&cadastro=1'>Clique aqui para validar sua conta</a>";
