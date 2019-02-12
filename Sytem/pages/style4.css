@@ -15,8 +15,18 @@ p {
     line-height: 1.7em;
     color: #999;
 }
-.mb-3, .my-3 {
-    width: min-content;
+.my-3{
+    width: max-content;	
+	
+}
+.table {
+    width: max-content;
+	text-align: center;
+	
+}
+table.thead{
+	
+	text-align: center;
 }
 h,
 
@@ -202,9 +212,12 @@ a.article:hover {
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
-
+.wrapper{
+	
+	width: 98%;
+}
 #content {
-    width: 100%;
+	width: max-content;
     padding: 15px;
     min-height: 100vh;
     transition: all 0.3s;
