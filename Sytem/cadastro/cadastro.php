@@ -6,19 +6,10 @@
  * Time: 17:20
  */
 
-include ("../classes/Database/DatabaseMysql.php");
-include ($_SERVER["DOCUMENT_ROOT"]."/Sensors/classes/Mail.php");
+ini_set('display_errors',1);
+ini_set('display_startup_erros',1);
 
-function recupera_config(){
-    $path_config = $_SERVER["DOCUMENT_ROOT"]."/Sensors/bases/config.json";
-    $file = file_get_contents($path_config);
-    if ($file != null){
-        return json_decode($file);
-    }
-    else{
-        return null;
-    }
-}
+include ("DatabaseMysql.php");
 
 if (isset($_POST['name'])){
     $nome = $_POST['name'];
@@ -69,32 +60,17 @@ else{
     exit;
 }
 
-$config = recupera_config();
 
-$db = new DatabaseMysql($config->database->login,$config->database->server,$config->database->senha,$config->database->base);
-
-$verificador = md5($login);
+$db = new DatabaseMysql("ramon","142.44.247.125","Sportrecife2008","system_mon");
 
 
-$sql = "INSERT INTO usuarios (nome_completo,login,senha,companhia,email,verificado) VALUES ('$nome','$login','$pass','$group','$email','$verificador')";
+var_dump($db);
+$sql = "INSERT INTO User (`nome_completo`,`login`,`senha`,`group`,`email`) VALUES ('$nome','$login','$pass','$group','$email')";
 
-if($db->insert($sql,0)){
-    $msg = "<a href = '$config->host/Sensors/bases/authenticationMail.php?auth=$verificador&cadastro=1'>Clique aqui para validar sua conta</a>";
 
-    $mail = new Mail(
-        $config->mail->smtp,
-        $config->mail->porta,
-        $config->mail->login,
-        $config->mail->senha,
-        $config->mail->login,
-        $config->mail->nome,
-        $email,
-        $nome,
-        "Confirmar E-mail",
-        $msg,
-        $config->mail->ssl
-    );
-    $mail->send_mail();
+if($db->insert($sql,1)){
+    echo "Cadastro realizado";
+    echo "<script> window.location.href = '../login'; </script>";
 }
 else{
     echo "Login já existe";

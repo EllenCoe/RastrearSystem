@@ -118,3 +118,41 @@ $.getScript("https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles
     );
 
 });
+
+
+var query;
+$(document).ready(function () {
+
+    $("#login").click(function () {
+        query = "";
+        $("input").each(function (i) {
+            if($(this).val()){
+                query += "&" + $(this).attr("name") + "=" + $(this).val() + "";
+            }
+        });
+        if(query != ""){
+            $("#loading").show("slow");
+            //$("#cad").attr("type","button");
+            query = query.substring(1,(query.length));
+            //cadastro(query);
+        }
+        // setInterval(function () {
+        //     $("#loading").hide("slow");
+        // },2000);
+    });
+});
+
+function cadastro(query){
+    //alert(query);
+    $.ajax({
+        method:'post',
+        data: query,
+        url: 'login.php',
+        success: function (result) {
+            alert(result);
+        },
+        error: function(result){
+            alert("Erro\nStatus: " + result.status);
+        }
+    });
+}
