@@ -89,23 +89,61 @@ function fora_setor(origem,setorAtual){
 	return result;
 }
 
+
+
+
 function compararDatas(antiga,nova){
 	
-	if(antiga == nova){
-		return;
+
+	sub1 = antiga.substring(0,10);
+	sub2 = nova.substring(0,10);
+	
+	console.log("sub",sub1);
+	console.log("sub",sub2);
+	
+	var result;
+	
+	var aux1 = antiga.substring(0,10).split("/").reverse().join("/") + antiga.substring(10,19);
+	var aux2 = nova.substring(0,10).split("/").reverse().join("/") + nova.substring(10,19);
+
+	var date_antiga = new Date(aux1);
+	var date_nova = new Date(aux2);
+	
+	console.log("Data antiga",date_antiga);
+	console.log("Data nova",date_nova);
+	
+	
+	var diferenca_miliseconds = date_nova.getTime() - date_antiga.getTime();
+	
+	if(diferenca_miliseconds == 0){
+		console.log("Dispositivo não atualizado");
+		return 0;
+	}
+	else if(diferenca_miliseconds >= 3600000 && diferenca_miliseconds < 7200000){
+		console.log("De 1 a 2h hora fora do Setor");
+		return 1;
+	}
+	else if(diferenca_miliseconds >= 7200000 && diferenca_miliseconds < 14400000){
+		console.log("De duas a 4h hora fora do Setor");
+		return 2;
+	}
+	else if(diferenca_miliseconds >=14400000){
+		
+		console.log("Mais de a 4h hora fora do Setor");
+		return 3;
 	}
 	
-	console.log(antiga);
-	console.log(nova);
-	var tempDate = new Date(antiga);
-	console.info("Milliseconds:", tempDate.getTime());
+	console.info("Milliseconds:", diferenca_miliseconds);
+
 	
-	return;
+	
 }
+	
 
 var monitoramentoModulo = angular.module('monitoramentoController',['dirPagination']);
 
 monitoramentoModulo.controller("monitoramentoController", function($scope, $http,$window){
+
 
 
 
@@ -132,11 +170,16 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 
         });
     }
+	
+	
     logArray(arrayLogs,function (callback) {
         for(var i=0;i<=callback.length;i++){
-            arrayLogs.push(callback[i]);
+			if(callback != undefined){
+				arrayLogs.push(callback[i]);
+			}
         }
     });
+	
 	
 	var dispositivos = function(arrayDispositivo,callback){
 		ref.child("dispositivos").once('value',function (snapshot) {
@@ -208,44 +251,86 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 					if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
 						setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
 						
-						var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
-						console.log(exited);
 						
-						if(exited == true){
-							var dados = arrayLogs.filter(function( element ) {
-							   return element !== undefined;
-							});
+							log_aux = {
 							
-							console.log(dados);
-							aux_logBase = dados.filter(function(value,index,arr){
-									return value.equipamento_id == arrayEquipamento[i].setor;	
-							});
+								data: aux_dispositivo[0].Data,
+								latitude_dispositivo: aux_dispositivo[0].Latitude,
+								longitude_dispositivo: aux_dispositivo[0].Longitude,
+								nome: arrayEquipamento[i].nome,
+								equipamento_id: arrayEquipamento[i].codigo,
+								setor_nome: arrayEquipamento[i].setor_nome,
+								setor_id: arrayEquipamento[0].setor,
+								latitude_setor: aux_setor[0].latitude,
+								longitude_setor: aux_setor[0].longitude,
+								setor_atual: setor_atual,
+								codigo :i
+							}
 							
-							compararDatas(aux_logBase[0].data,aux_dispositivo[0].Data);
+							
+							log.push(log_aux);
+							cadastrar(log_aux,log_aux.equipamento_id,"log");
 							
 							
+							var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
+							console.log("Está fora do setor", exited);
 							
+							if(exited == true){
+								var dados = arrayLogs.filter(function( element ) {
+								   return element !== undefined;
+								});
+								
+								console.log(dados);
+								aux_logBase = dados.filter(function(value,index,arr){
+										return value.equipamento_id == arrayEquipamento[i].codigo;	
+								});
+								
+								console.log(aux_logBase);
+								console.log("aux",aux_logBase);
+								if(aux_logBase.length == 0){
+									
+									$window.location.reload();
+									
+								} else{
+									
+									
+			
+								}
+								
+							}
+							
+							
+							      k = compararDatas(aux_logBase[0].data,aux_dispositivo[0].Data)
+								  
+								  cadastrar(log_aux,log_aux.equipamento_id,"log")
+									
+									$scope.changeColor = function(codigo)){
+										var situacao = codigo;
+										console.log("Sit",situacao);
+										if(situacao == 0){
+											return {'color': 'gray'};
+										}
+										else if(situacao == 1){
+											return {'color': 'green'};
+										}
+										else if(situacao == 2){
+											return {'color': 'yellow'};
+										}
+										else if (situacao == 3){
+											return {'color': 'red'};
+										}
+										
+									}
+							
+	
 						}
 						
 						
-						log_aux = {
-							
-							data: aux_dispositivo[0].Data,
-							latitude_dispositivo: aux_dispositivo[0].Latitude,
-							longitude_dispositivo: aux_dispositivo[0].Longitude,
-							nome: arrayEquipamento[i].nome,
-							equipamento_id: arrayEquipamento[i].codigo,
-							setor_nome: arrayEquipamento[i].setor_nome,
-							setor_id: arrayEquipamento[0].setor,
-							latitude_setor: aux_setor[0].latitude,
-							longitude_setor: aux_setor[0].longitude,
-							setor_atual: setor_atual
-						}
 						
-						log.push(log_aux);
-						cadastrar(log_aux,log_aux.equipamento_id,"log");
 						
-					}
+						
+						
+					
 					
 				}
 				if(log != null){ $("#loader").hide()};
