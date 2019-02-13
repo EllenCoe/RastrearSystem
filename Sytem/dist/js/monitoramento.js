@@ -75,7 +75,33 @@ function calcula_alguma_coisa(latitude,longitude,arraySetor){
 	// // console.log(arraySetor[j].nome);
 	// return "Não encontrado";
 }
+function fora_setor(origem,setorAtual){
+	
+	var result;
+	
+	if(origem == setorAtual){
+		 result = false;
+		
+	}else{
+		result = true;
+		
+	}
+	return result;
+}
 
+function compararDatas(antiga,nova){
+	
+	if(antiga == nova){
+		return;
+	}
+	
+	console.log(antiga);
+	console.log(nova);
+	var tempDate = new Date(antiga);
+	console.info("Milliseconds:", tempDate.getTime());
+	
+	return;
+}
 
 var monitoramentoModulo = angular.module('monitoramentoController',['dirPagination']);
 
@@ -89,6 +115,28 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 
 	
 	$("#loader").show();
+	
+	var arrayLogs = $scope.logs = [];
+	
+	$("#loader").show();
+	
+    var logArray = function(arrayLogs,callback){
+        ref.child("log").once('value',function (snapshot) {
+
+            feed = [];
+            snapshot.forEach(function (child) {
+                var data = child.val();
+                feed.push(data);				
+            });
+            callback(feed);
+
+        });
+    }
+    logArray(arrayLogs,function (callback) {
+        for(var i=0;i<=callback.length;i++){
+            arrayLogs.push(callback[i]);
+        }
+    });
 	
 	var dispositivos = function(arrayDispositivo,callback){
 		ref.child("dispositivos").once('value',function (snapshot) {
@@ -143,6 +191,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 				// var log = [];
 				var value = [];
 				
+				
 				for(var i=0;i<arrayEquipamento.length;i++){
 					aux_dispositivo = arrayDispositivo.filter(function(value,index,arr){
 						
@@ -153,9 +202,34 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 						return value.codigo == arrayEquipamento[i].setor;
 					});
 					
+
+					
+					
 					if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
 						setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
+						
+						var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
+						console.log(exited);
+						
+						if(exited == true){
+							var dados = arrayLogs.filter(function( element ) {
+							   return element !== undefined;
+							});
+							
+							console.log(dados);
+							aux_logBase = dados.filter(function(value,index,arr){
+									return value.equipamento_id == arrayEquipamento[i].setor;	
+							});
+							
+							compararDatas(aux_logBase[0].data,aux_dispositivo[0].Data);
+							
+							
+							
+						}
+						
+						
 						log_aux = {
+							
 							data: aux_dispositivo[0].Data,
 							latitude_dispositivo: aux_dispositivo[0].Latitude,
 							longitude_dispositivo: aux_dispositivo[0].Longitude,
@@ -181,6 +255,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 	
 	
 	
+	
 	$scope.detalhar = function(monitoramentoSelecionado) {
 		
 		$scope.monitoramento = monitoramentoSelecionado;
@@ -202,8 +277,8 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		$scope.reverse = !$scope.reverse;
 	}
 	
-	setInterval(function(){ 
+	/*setInterval(function(){ 
 		$window.location.reload();
-		}, 60000);
+		}, 60000);*/
 
 });

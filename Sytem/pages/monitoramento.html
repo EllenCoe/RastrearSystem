@@ -95,7 +95,7 @@
 				
                <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
                <br>
-               <div class = "container">
+               <div class = "container-fluid">
                   <div class="input-group">
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -143,7 +143,7 @@
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                  </div>
-                                 <div class = "container">
+                                 <div class = "container-fluid">
                                     <br>
 									<form name="customerForm" >
 
@@ -231,59 +231,55 @@
                               </div>
                            </div>
                         </div>
-                  
-               
-                  
-               
-               <!--div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">3</div-->
-            
-            <div class="container-fluid">
-            </div>
-         </div>
-      </div>
-      <!-- Bootstrap core JavaScript
-         ================================================== -->
-      <!-- Placed at the end of the document so the pages load faster -->
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-      <script src="../assets/js/vendor/popper.min.js"></script>
-      <script src="../dist/js/bootstrap.min.js"></script>
-      <script src="../assets/js/vendor/holder.min.js"></script>
-      <script>
-         // Example starter JavaScript for disabling form submissions if there are invalid fields
-         (function() {
-           'use strict';
-         $('#sidebarCollapse').on('click', function () {
-                   $('#sidebar').toggleClass('active');
-         
-               });
-         
-           window.addEventListener('load', function() {
-             // Fetch all the forms we want to apply custom Bootstrap validation styles to
-             var forms = document.getElementsByClassName('needs-validation');
-         
-             // Loop over them and prevent submission
-             var validation = Array.prototype.filter.call(forms, function(form) {
-               form.addEventListener('submit', function(event) {
-                 if (form.checkValidity() === false) {
-                   event.preventDefault();
-                   event.stopPropagation();
-                 }
-                 form.classList.add('was-validated');
-               }, false);
-         
-             });
-         
-           }, false);
-         })();
-      </script>
-   </body>
-   <footer align="center" class="sticky-footer">
-      <div class="container my-auto">
-         <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2018</span>
-         </div>
-      </div>
-   </footer>
-   <script src="../dist/js/jquery.min.js"></script>
-</html>
+					</div>
+   
+				  <!-- Bootstrap core JavaScript
+					 ================================================== -->
+				  <!-- Placed at the end of the document so the pages load faster -->
+				  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+				  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+				  <script src="../assets/js/vendor/popper.min.js"></script>
+				  <script src="../dist/js/bootstrap.min.js"></script>
+				  <script src="../assets/js/vendor/holder.min.js"></script>
+				  <script>
+					 // Example starter JavaScript for disabling form submissions if there are invalid fields
+					 (function() {
+					   'use strict';
+					 $('#sidebarCollapse').on('click', function () {
+							   $('#sidebar').toggleClass('active');
+					 
+						   });
+					 
+					   window.addEventListener('load', function() {
+						 // Fetch all the forms we want to apply custom Bootstrap validation styles to
+						 var forms = document.getElementsByClassName('needs-validation');
+					 
+						 // Loop over them and prevent submission
+						 var validation = Array.prototype.filter.call(forms, function(form) {
+						   form.addEventListener('submit', function(event) {
+							 if (form.checkValidity() === false) {
+							   event.preventDefault();
+							   event.stopPropagation();
+							 }
+							 form.classList.add('was-validated');
+						   }, false);
+					 
+						 });
+					 
+					   }, false);
+					 })();
+				  </script>
+				  
+			   
+			   <footer align="center" class="sticky-footer">
+				  <div class="container my-auto">
+					 <div class="copyright text-center my-auto">
+						<span>Copyright © Your Website 2018</span>
+					 </div>
+				  </div>
+			   </footer>
+			   <script src="../dist/js/jquery.min.js"></script>
+			   </div>
+			   </div>
+			   </body>
+			</html>

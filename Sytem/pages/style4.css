@@ -17,11 +17,13 @@ p {
 }
 .my-3{
     width: max-content;	
+	min-width: 100%;
 	
 }
 .table {
-    width: max-content;
+    width: -webkit-fill-available;
 	text-align: center;
+	    
 	
 }
 table.thead{
@@ -221,6 +223,7 @@ a.article:hover {
     padding: 15px;
     min-height: 100vh;
     transition: all 0.3s;
+	min-width: 80%;
 }
 
 /* ---------------------------------------------------
