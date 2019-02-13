@@ -91,6 +91,7 @@ function fora_setor(origem,setorAtual){
 
 
 
+
 function compararDatas(antiga,nova){
 	
 
@@ -116,20 +117,20 @@ function compararDatas(antiga,nova){
 	
 	if(diferenca_miliseconds == 0){
 		console.log("Dispositivo não atualizado");
-		return;
+		return 0;
 	}
 	else if(diferenca_miliseconds >= 3600000 && diferenca_miliseconds < 7200000){
 		console.log("De 1 a 2h hora fora do Setor");
-		return;
+		return 1;
 	}
 	else if(diferenca_miliseconds >= 7200000 && diferenca_miliseconds < 14400000){
 		console.log("De duas a 4h hora fora do Setor");
-		return;
+		return 2;
 	}
 	else if(diferenca_miliseconds >=14400000){
 		
 		console.log("Mais de a 4h hora fora do Setor");
-		return;
+		return 3;
 	}
 	
 	console.info("Milliseconds:", diferenca_miliseconds);
@@ -142,6 +143,7 @@ function compararDatas(antiga,nova){
 var monitoramentoModulo = angular.module('monitoramentoController',['dirPagination']);
 
 monitoramentoModulo.controller("monitoramentoController", function($scope, $http,$window){
+
 
 
 
@@ -261,10 +263,10 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 								setor_id: arrayEquipamento[0].setor,
 								latitude_setor: aux_setor[0].latitude,
 								longitude_setor: aux_setor[0].longitude,
-								setor_atual: setor_atual
+								setor_atual: setor_atual,
+								codigo :i
 							}
 							
-							var dataInicial;
 							
 							log.push(log_aux);
 							cadastrar(log_aux,log_aux.equipamento_id,"log");
@@ -274,9 +276,53 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 							console.log("Está fora do setor", exited);
 							
 							if(exited == true){
+								var dados = arrayLogs.filter(function( element ) {
+								   return element !== undefined;
+								});
 								
+								console.log(dados);
+								aux_logBase = dados.filter(function(value,index,arr){
+										return value.equipamento_id == arrayEquipamento[i].codigo;	
+								});
+								
+								console.log(aux_logBase);
+								console.log("aux",aux_logBase);
+								if(aux_logBase.length == 0){
+									
+									$window.location.reload();
+									
+								} else{
+									
+									
+			
+								}
 								
 							}
+							
+							
+							      k = compararDatas(aux_logBase[0].data,aux_dispositivo[0].Data)
+								  
+								  cadastrar(log_aux,log_aux.equipamento_id,"log")
+									
+									$scope.changeColor = function(codigo)){
+										var situacao = codigo;
+										console.log("Sit",situacao);
+										if(situacao == 0){
+											return {'color': 'gray'};
+										}
+										else if(situacao == 1){
+											return {'color': 'green'};
+										}
+										else if(situacao == 2){
+											return {'color': 'yellow'};
+										}
+										else if (situacao == 3){
+											return {'color': 'red'};
+										}
+										
+									}
+							
+	
 						}
 						
 						

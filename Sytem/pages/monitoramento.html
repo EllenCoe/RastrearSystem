@@ -122,7 +122,7 @@
                               <td>{{monitoramentoTabelas.nome}}</td>
                               <td>{{monitoramentoTabelas.setor_nome}}</td>
                               <td>{{monitoramentoTabelas.setor_atual}}</td>
-                              <td><i id = "situacao" class="fas fa-circle"></i></td>
+                              <td><i id = "situacao" class="fas fa-circle" ng-style = "changeColor({{monitoramentoTabelas.codigo}})"></i></td>
                               <td><button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target=".bd-table-modal-lg" ng-click = "detalhar(monitoramentoTabelas)">  <i class="fas fa-info"></i></td>
                            </tr>
                            <br>
