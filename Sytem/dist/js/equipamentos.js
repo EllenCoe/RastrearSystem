@@ -10,9 +10,15 @@ var equipamentosModulo = angular.module('equipamentosModulo', ['dirPagination'])
 equipamentosModulo.controller("equipamentosController", function($scope, $http, $window) {
 
     //urlEquipamento = 'http://localhost:8080/RastrearSystem/rest/Equipamentos';
-
+	$(window).on('load', function () {
+		
+		$('#preloader .inner').fadeOut();
+		$('#imagemTeste').fadeOut();
+		$('#preloader').fadeOut(); 
+	});
 
     var arraySetor = $scope.setores = [];
+	var arrayDispositivosCadastrados = [];
 	
 	$("#loader").show();
 	
@@ -31,9 +37,11 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
     setor(arraySetor,function (callback) {
         for(var i=0;i<=callback.length;i++){
             arraySetor.push(callback[i]);
+			
         }
     });
-
+	
+	
     var arrayEquipamento = $scope.equipamentos = [];
 
     var equipamento = function(arrayEquipamento,callback){
@@ -52,16 +60,20 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         for(var i=0;i<=callback.length;i++){
             if (callback[i] !== undefined){
                 arrayEquipamento.push(callback[i]);
-                console.log(arrayEquipamento);
+				arrayDispositivosCadastrados.push(callback[i].dispositivo);
+               
             }
         }
         $("th").click();
+		
+		if(arrayEquipamento.length != 0){ $("#loader").hide()};
+		
     });
 		
     
     setTimeout(function(){ $("th").click(); }, 3000);
 
-	if(arrayEquipamento != null){ $("#loader").hide()};
+	
 	
     $scope.selecionaEquipamento = function(equipamentoSelecionado) {
         $scope.equipamento = equipamentoSelecionado;
@@ -98,40 +110,57 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
             tag_ident = "0";
         }
         //else, cadastra na tabela de log
+		
+		var filtro = arrayEquipamento.filter( function(item) { return item.dispositivo != 0 } );
+		console.log(filtro);
+		var tag_exist = filtro.filter( function(item) { return item.dispositivo == tag_ident });
+		console.log(tag_exist);
+		
+		if(tag_exist.length > 0){
+			$('#alertDispositivo').fadeIn(1000);
+			setTimeout(function() { 
+				$('#alertDispositivo').fadeOut(1000); 
+			}, 5000);
+			
+		}else{
+		
+			ref.child("equipamento").once('value', function(snapshot) {
+				
+				if (!(snapshot.exists())){
+					id = 1;
+				}
+				else{
+					json = snapshot.val();
+					id = Object.keys(json).sort().pop();
+					id = parseInt(id)
+					id = id + 1;
+				}
+				postData = {
+					codigo: id,
+					nome: nome,
+					marca: marca,
+					serie: serie,
+					modelo: modelo,
+					patrimonio: patrimonio,
+					dispositivo: tag_ident,
+					setor_nome: setor_nome,
+					setor:setor
+				};
+				cadastrar(postData,id,"equipamento");
+			});
+			
+			$('#alertCadastrar').fadeIn(1000);
+			setTimeout(function() { 
+				$('#alertCadastrar').fadeOut(1000); 
+			}, 5000);
+			$scope.limparCampos();
+		}
 
-
-        ref.child("equipamento").once('value', function(snapshot) {
-            if (!(snapshot.exists())){
-                id = 1;
-            }
-            else{
-                json = snapshot.val();
-                id = Object.keys(json).sort().pop();
-                id = parseInt(id)
-                id = id + 1;
-            }
-            postData = {
-                codigo: id,
-                nome: nome,
-                marca: marca,
-                serie: serie,
-                modelo: modelo,
-                patrimonio: patrimonio,
-                dispositivo: tag_ident,
-                setor_nome: setor_nome,
-                setor:setor
-            };
-            cadastrar(postData,id,"equipamento");
-        });
-
-        $('#alertCadastrar').fadeIn(1000);
-    setTimeout(function() { 
-        $('#alertCadastrar').fadeOut(1000); 
-    }, 5000);
         
         
         
-        $scope.limparCampos();
+        
+        
         
         
     },
@@ -182,25 +211,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         dispositivo_old = $("#span-dispositivo-"+id).text();
 
 
-        $("#cancel-"+id).hide();
-        $("#alterar-"+id).hide();
-        $("#editar-"+id).show();
-
-        $("#span-nome-"+id).hide();
-        $("#input-nome-"+id).show();
-
-        $("#span-patrimonio-"+id).hide();
-        $("#input-patrimonio-"+id).show();
-
-        $("#span-marca-"+id).hide();
-        $("#input-marca-"+id).show();
-
-        $("#span-modelo-"+id).hide();
-        $("#input-modelo-"+id).show();
-
-        $("#span-serie-"+id).hide();
-        $("#input-serie-"+id).show();
-
+        
 
         nome = $("#input-nome-"+id).val();
         patrimonio = $("#input-patrimonio-"+id).val();
@@ -232,36 +243,69 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         if (dispositivo == ""){
             dispositivo = dispositivo_old;
         }
+		
+		var filtro = arrayEquipamento.filter( function(item) { return item.dispositivo != 0 } );
+		console.log(filtro);
+		var dispositivo_exist = filtro.filter( function(item) { return item.dispositivo == dispositivo });
+		console.log("dispositivo exist",dispositivo_exist);
+		
+		if(dispositivo_exist.length > 0){
+			$('#alertDispositivo').fadeIn(1000);
+			setTimeout(function() { 
+			$('#alertDispositivo').fadeOut(1000); 
+			}, 5000);
+		}else{
+		$("#cancel-"+id).hide();
+        $("#alterar-"+id).hide();
+        $("#editar-"+id).show();
 
-        postData = {
-            codigo: id,
-            nome: nome,
-            patrimonio: patrimonio,
-            marca: marca,
-            modelo:modelo,
-            setor: setor,
-            setor_nome: setor_nome,
-            dispositivo: dispositivo,
-            serie:serie
-        };
-        cadastrar(postData,id,"equipamento");
+        $("#span-nome-"+id).hide();
+        $("#input-nome-"+id).show();
 
-        $scope.cancel(id);
+        $("#span-patrimonio-"+id).hide();
+        $("#input-patrimonio-"+id).show();
 
-        $("#span-nome-"+id).text(nome);
-        $("#span-patrimonio-"+id).text(patrimonio);
-        $("#span-marca-"+id).text(marca);
-        $("#span-modelo-"+id).text(modelo);
-        $("#span-serie-"+id).text(serie);
-        $("#span-dispositivo-"+id).text(dispositivo);
-        $("#span-setor-"+id).text(setor_nome);
+        $("#span-marca-"+id).hide();
+        $("#input-marca-"+id).show();
 
-        if(nome != nome_old || patrimonio != patrimonio_old || marca != marca_old || modelo != modelo_old || serie != serie_old || dispositivo != dispositivo_old){
-            $('#alertSalvar').fadeIn(1000);
-        setTimeout(function() { 
-            $('#alertSalvar').fadeOut(1000); 
-            }, 5000);
-        }
+        $("#span-modelo-"+id).hide();
+        $("#input-modelo-"+id).show();
+
+        $("#span-serie-"+id).hide();
+        $("#input-serie-"+id).show();
+
+			postData = {
+				codigo: id,
+				nome: nome,
+				patrimonio: patrimonio,
+				marca: marca,
+				modelo:modelo,
+				setor: setor,
+				setor_nome: setor_nome,
+				dispositivo: dispositivo,
+				serie:serie
+			};
+			cadastrar(postData,id,"equipamento");
+			
+			$("#span-nome-"+id).text(nome);
+			$("#span-patrimonio-"+id).text(patrimonio);
+			$("#span-marca-"+id).text(marca);
+			$("#span-modelo-"+id).text(modelo);
+			$("#span-serie-"+id).text(serie);
+			$("#span-dispositivo-"+id).text(dispositivo);
+			$("#span-setor-"+id).text(setor_nome);
+
+			if(nome != nome_old || patrimonio != patrimonio_old || marca != marca_old || modelo != modelo_old || serie != serie_old || dispositivo != dispositivo_old){
+				$('#alertSalvar').fadeIn(1000);
+			setTimeout(function() { 
+				$('#alertSalvar').fadeOut(1000); 
+				}, 5000);
+			}
+			$scope.cancel(id);
+
+		}
+        
+        
 
     },
 
@@ -319,9 +363,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         alert(erro)
         });}
         $scope.listarequipamentos();*/
-	setInterval(function(){ 
-		$window.location.reload();
-		}, 60000);
+	
 		
 		
 });

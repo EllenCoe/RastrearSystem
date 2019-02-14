@@ -7,14 +7,24 @@
       <meta name="author" content="">
       <link rel="icon" href="../favicon.png">
       <title>Equipamentos</title>
+	  <div id="preloader">
+		<img src="../assets/LogoAplication1.png" id = "imagemTeste">
+        <div class="inner">
+		
+           <div class="bolas">
+			<div></div>
+              <div></div>
+              <div></div>                    
+           </div>
+        </div>
+    </div>
       <!-- Bootstrap core CSS -->
       <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" href="style4.css">
       <!-- Custom styles for this template -->
       <link href="form-validation.css" rel="stylesheet">
       <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-
+      
       <!-- Config Firebase -->
       <script src = "https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
       <script src="../dist/js/config.js"></script>
@@ -28,6 +38,7 @@
       
    </head>
    <body class="bg-light" ng-controller = "equipamentosController">
+	
       <div class="wrapper">
          <!-- Sidebar  -->
          <nav id="sidebar">
@@ -76,7 +87,27 @@
             </ul>
          </nav>
          <!-- Page Content  -->
+		 
          <div id="content">
+			<div class="alert alert-danger" id="alertExcluir" style="display:none;" role="alert">
+				  Equipamento deletado com sucesso!
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+			</div>
+			<div class="alert alert-success" id="alertSalvar" style="display:none;" role="alert">
+				  Edição salva com sucesso!
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+			</div>
+		    <div class="alert alert-warning" id="alertDispositivo" style="display:none;" role="alert">
+				  Dispositivo já cadastrado em outro equipamento!
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+			</div>
+			
             <nav class="navbar navbar-expand-lg navbar-light bg-full">
                <div class="container-fluid">
                   <button type="button" id="sidebarCollapse" class="btn btn btn-outline-light">
@@ -89,13 +120,8 @@
                </div>
             </nav>
 			
-			<div class="alert alert-danger" id="alertExcluir" style="display:none;" role="alert">
-				  Setor deletado com sucesso!
-			</div>
-			<div class="alert alert-success" id="alertSalvar" style="display:none;" role="alert">
-				  Edição salva com sucesso!
-			</div>
-          
+			
+            
             
 			  <div class="my-3 p-3 bg-white rounded shadow-sm">
 				 <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
@@ -118,7 +144,7 @@
 							 <th ng-click="ordenar('modelo')">Modelo <i class="fa fa-fw fa-sort"></i></th>
 							 <th ng-click="ordenar('serie')">Serie <i class="fa fa-fw fa-sort"></i></th>
 							 <th ng-click="ordenar('setor')">Setor <i class="fa fa-fw fa-sort"></i></th>
-							 <th ng-click="ordenar('tag')">Dispositivo <i class="fa fa-fw fa-sort"></i></th>
+							 <th ng-click="ordenar('dispositivo')">Dispositivo <i class="fa fa-fw fa-sort"></i></th>
 							 <th>Editar</th>
 							 <th>Deletar</th>
 						  </tr>
@@ -170,7 +196,7 @@
 							 <td>
                          <div style = "width: 90px;text-align: center;">
                            <button type="button" id = "editar-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "editar(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-edit"></i>
-                           <button style="display:none" type="button" id = "alterar-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "alterar(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="far fa-save"></i>
+                           <button style="display:none" type="button" id = "alterar-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "alterar(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-save"></i>
                            <button style="display:none" type="button" id = "cancel-{{equipamentosTabela.codigo}}" formnovalidate ng-click = "cancel(equipamentosTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-times"></i>
                         </div>
 						 </td>
@@ -183,12 +209,13 @@
 					   </tbody>
 					</table>
 					<dir-pagination-controls max-size="4" boundary-links="true"></dir-pagination-controls>
-					<div class="loader" id= "loader" ></div>
+					
 				 </div>
+				 <div class="loader" id= "loader" >
+			    </div>
 			  </div>
                
-            <div class="container-fluid">
-            </div>
+           
         
       <!-- Bootstrap core JavaScript
          ================================================== -->

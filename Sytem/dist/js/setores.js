@@ -13,8 +13,15 @@ function delete_firebase(id,tabela){
 var setoresModulo = angular.module('setoresModulo',['dirPagination']);
 
 setoresModulo.controller("setoresController", function($scope, $http,$window){
-
-
+	
+	$(window).on('load', function () {
+		
+		$('#preloader .inner').fadeOut();
+		$('#imagemTeste').fadeOut();
+		$('#preloader').fadeOut(); 
+		
+	});
+	$("#loader").show();
 	var arraySetor = $scope.setores = [];
 
 	var setor = function(arraySetor,callback){
@@ -28,15 +35,47 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 
 		});
 	}
+	
+	
 	setor(arraySetor,function (callback) {
 		for(var i=0;i<callback.length;i++){
 			arraySetor.push(callback[i]);
 		}
 		$("th").click();
+		if(arraySetor.length != 0){ $("#loader").hide();
+		};
+		
+		
 	});
+	
+	var arrayEquipamento = [];
 
+    var equipamento = function(arrayEquipamento,callback){
+        ref.child("equipamento").once('value',function (snapshot) {
+
+            feed = [];
+            snapshot.forEach(function (child) {
+                var data = child.val();
+                feed.push(data);				
+            });
+            callback(feed);
+
+        });
+    }
+    equipamento(arrayEquipamento,function (callback) {
+        for(var i=0;i<=callback.length;i++){
+            if (callback[i] !== undefined){
+                arrayEquipamento.push(callback[i]);
+				
+            }
+        }
+        $("th").click();
+		
+    });
+	console.log(arrayEquipamento);
 	setTimeout(function(){ $("th").click(); }, 2000);
-
+		
+	
 	$("#lista td").attr("style","");
 
 	$scope.selecionaSetor = function(setorSelecionado){
@@ -127,16 +166,30 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 	}
 
 	$scope.excluir = function(id,setorSelecionado) {
-		$scope.setores = $scope.setores.filter(function(value, index, arr){
-			return value.codigo != id;
-		});
-
-		cadastrar(null,id,"setor");
 		
-		$('#alertExcluir').fadeIn(1000);
-	   setTimeout(function() { 
-		   $('#alertExcluir').fadeOut(1000); 
-	   }, 5000);
+		
+		var setor_exist = arrayEquipamento.filter( function(item) { return item.setor == id });
+		
+		
+		if(setor_exist.length > 0){
+			$('#alertIndisponivel').fadeIn(1000);
+			setTimeout(function() { 
+			$('#alertIndisponivel').fadeOut(1000); 
+			}, 5000);
+		}else{
+				$scope.setores = $scope.setores.filter(function(value, index, arr){
+				return value.codigo != id;
+			});
+			cadastrar(null,id,"setor");
+		
+			$('#alertExcluir').fadeIn(1000);
+		   setTimeout(function() { 
+			   $('#alertExcluir').fadeOut(1000); 
+		   }, 5000);
+			
+			
+		}
+		
 	}
 
 	$scope.cancel = function(id) {
@@ -191,20 +244,10 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		
 		
 		$scope.limparCampos(); 
-	 
-		
-		
-		
-		
-		
-       
-
-
-
-    
-				
+			
 
 	}
+	
 	
 	$scope.ordenar = function(keyname){
 		
@@ -215,8 +258,6 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 				
 	}
 	
-	setInterval(function(){ 
-		$window.location.reload();
-		}, 60000);
+	
 	
 });

@@ -7,6 +7,17 @@
       <meta name="author" content="">
       <link rel="icon" href="../favicon.png">
       <title>Cadastro de Equipamento</title>
+	  <div id="preloader">
+		<img src="../assets/LogoAplication1.png">
+        <div class="inner">
+		
+           <div class="bolas">
+			<div></div>
+              <div></div>
+              <div></div>                    
+           </div>
+        </div>
+    </div>
       <!-- Bootstrap core CSS -->
       <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" href="style4.css">
@@ -28,6 +39,19 @@
       
    </head>
    <body class="bg-light" ng-controller = "equipamentosController">
+		<div class="alert alert-success" id="alertCadastrar" style="display:none;" role="alert">
+		  Cadastro realizado com sucesso!
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="alert alert-warning" id="alertDispositivo" style="display:none;"role="alert">
+		  Dispositivo já cadastrado em outro equipamento!
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+            
       <div class="wrapper">
          <!-- Sidebar  -->
          <nav id="sidebar">
@@ -90,10 +114,7 @@
             
             </nav>
             
-			<div class="alert alert-success" id="alertCadastrar" style="display:none;" role="alert">
-				  Cadastro realizado com sucesso!
-			</div>
-            
+			
               
                   <div class="my-3 p-3 bg-white rounded shadow-sm">
                      
@@ -274,16 +295,7 @@
              var forms = document.getElementsByClassName('needs-validation');
          
              // Loop over them and prevent submission
-             var validation = Array.prototype.filter.call(forms, function(form) {
-               form.addEventListener('submit', function(event) {
-                 if (form.checkValidity() === false) {
-                   event.preventDefault();
-                   event.stopPropagation();
-                 }
-                 form.classList.add('was-validated');
-               }, false);
-         
-             });
+             
          
            }, false);
          })();

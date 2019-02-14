@@ -143,6 +143,12 @@ function compararDatas(antiga,nova){
 var monitoramentoModulo = angular.module('monitoramentoController',['dirPagination']);
 
 monitoramentoModulo.controller("monitoramentoController", function($scope, $http,$window,$interval){
+	$(window).on('load', function () {
+		$('#preloader').fadeOut('slow'); 
+		$('#preloader .inner').fadeOut();
+		
+		$('body').delay(250).css({'overflow': 'visible'});
+	});
 	
 	var log = $scope.monitoramentos = [];
 	var arrayDispositivo = [];
@@ -394,8 +400,8 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 	
 
 
-	/*setInterval(function(){ 
+	setInterval(function(){ 
 		$window.location.reload();
-		}, 60000);*/
+		}, 60000);
 
 });
