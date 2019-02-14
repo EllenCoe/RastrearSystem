@@ -214,6 +214,9 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 				
 				
 	}
-		 
+	
+	setInterval(function(){ 
+		$window.location.reload();
+		}, 60000);
 	
 });

@@ -98,8 +98,8 @@ function compararDatas(antiga,nova){
 	sub1 = antiga.substring(0,10);
 	sub2 = nova.substring(0,10);
 	
-	console.log("sub",sub1);
-	console.log("sub",sub2);
+	//console.log("sub",sub1);
+	//console.log("sub",sub2);
 	
 	var result;
 	
@@ -109,8 +109,8 @@ function compararDatas(antiga,nova){
 	var date_antiga = new Date(aux1);
 	var date_nova = new Date(aux2);
 	
-	console.log("Data antiga",date_antiga);
-	console.log("Data nova",date_nova);
+	//console.log("Data antiga",date_antiga);
+	//console.log("Data nova",date_nova);
 	
 	
 	var diferenca_miliseconds = date_nova.getTime() - date_antiga.getTime();
@@ -133,7 +133,7 @@ function compararDatas(antiga,nova){
 		return 5;
 	}
 	
-	console.info("Milliseconds:", diferenca_miliseconds);
+	//console.info("Milliseconds:", diferenca_miliseconds);
 
 	
 	
@@ -142,7 +142,7 @@ function compararDatas(antiga,nova){
 
 var monitoramentoModulo = angular.module('monitoramentoController',['dirPagination']);
 
-monitoramentoModulo.controller("monitoramentoController", function($scope, $http,$window){
+monitoramentoModulo.controller("monitoramentoController", function($scope, $http,$window,$interval){
 	
 	var log = $scope.monitoramentos = [];
 	var arrayDispositivo = [];
@@ -230,7 +230,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		for(var i=0;i<callback.length;i++){
 			
 			arrayEquipamento.push(callback[i]);
-			console.log(arrayEquipamento.length);
+			
 		}
 	
 
@@ -238,11 +238,9 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 	
 	var value = [];
 	
-	console.log(arrayEquipamento);
-	console.log(arrayEquipamento.length);
 	
 	for(var i=0;i<arrayEquipamento.length;i++){
-		console.log("enntrou no for");
+		
 		aux_dispositivo = arrayDispositivo.filter(function(value,index,arr){
 			
 			return value.codigo == arrayEquipamento[i].dispositivo;
@@ -306,7 +304,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 							   return element !== undefined;
 							});
 							
-							console.log(dados);
+							
 							aux_logBase = dados.filter(function(value,index,arr){
 									return value.equipamento_id == arrayEquipamento[i].codigo;	
 							});
@@ -345,7 +343,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 							
 	$scope.changeColor = function(codigo){
 		var situacao = codigo;
-		console.log("Sit",situacao);
+		//console.log("Sit",situacao);
 		if(situacao == 0){
 			return {'color': 'lightgray'};
 		}
@@ -353,13 +351,13 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 			return {'color': 'lightgreen'};
 		}
 		else if(situacao == 2){
-			return {'color': 'yellow'};
+			return {'color': 'black'};
 		}
 		else if (situacao == 3){
-			return {'color': 'orange'};
+			return {'color': 'yellow'};
 		}
 		else if (situacao == 4){
-			return {'color': 'black'};
+			return {'color': 'orange'};
 		}
 		else if (situacao == 5){
 			return {'color': 'red'};
@@ -368,6 +366,19 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 	}						
 							
 
+	
+	setTimeout(function(){ $("th").click(); }, 2000);
+
+	$("#lista td").attr("style","");
+
+	/*$interval(function() {
+	  console.log("interval");
+	}, 1000);*/
+
+	$scope.ordenar = function(keyname){
+		$scope.sortKey = keyname;
+		$scope.reverse = !$scope.reverse;
+	},
 	$scope.detalhar = function(monitoramentoSelecionado) {
 		
 		$scope.monitoramento = monitoramentoSelecionado;
@@ -380,16 +391,9 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 
 	}
 	
-	setTimeout(function(){ $("th").click(); }, 2000);
-
-	$("#lista td").attr("style","");
-
-
-	$scope.ordenar = function(keyname){
-		$scope.sortKey = keyname;
-		$scope.reverse = !$scope.reverse;
-	}
 	
+
+
 	/*setInterval(function(){ 
 		$window.location.reload();
 		}, 60000);*/

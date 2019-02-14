@@ -319,6 +319,9 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         alert(erro)
         });}
         $scope.listarequipamentos();*/
+	setInterval(function(){ 
+		$window.location.reload();
+		}, 60000);
 		
 		
 });
