@@ -15,7 +15,7 @@ body, html {
 	width: 350px;
 	margin: 0 auto;
 	border: 1px solid white;
-	background: #fff;
+	background: #ffffff;
 	min-height: 250px;
 	padding: 20px;
 	z-index: 9999;
@@ -34,9 +34,9 @@ body, html {
 }
 #login-box .controls input {
 	border-radius: 0px;
-	background: rgb(98, 96, 96);
+	background: rgb(235, 253, 245);
 	border: 0px;
-	color: white;
+	color: black;
 	font-family: 'Nunito', sans-serif;
 }
 #login-box .controls input:focus {
