@@ -117,20 +117,20 @@ function compararDatas(antiga,nova){
 	
 	if(diferenca_miliseconds == 0){
 		console.log("Dispositivo não atualizado");
-		return 0;
+		return 2;
 	}
 	else if(diferenca_miliseconds >= 3600000 && diferenca_miliseconds < 7200000){
 		console.log("De 1 a 2h hora fora do Setor");
-		return 1;
+		return 3;
 	}
 	else if(diferenca_miliseconds >= 7200000 && diferenca_miliseconds < 14400000){
 		console.log("De duas a 4h hora fora do Setor");
-		return 2;
+		return 4;
 	}
 	else if(diferenca_miliseconds >=14400000){
 		
 		console.log("Mais de a 4h hora fora do Setor");
-		return 3;
+		return 5;
 	}
 	
 	console.info("Milliseconds:", diferenca_miliseconds);
@@ -143,10 +143,7 @@ function compararDatas(antiga,nova){
 var monitoramentoModulo = angular.module('monitoramentoController',['dirPagination']);
 
 monitoramentoModulo.controller("monitoramentoController", function($scope, $http,$window){
-
-
-
-
+	
 	var log = $scope.monitoramentos = [];
 	var arrayDispositivo = [];
 	var arrayEquipamento = [];
@@ -156,7 +153,6 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 	
 	var arrayLogs = $scope.logs = [];
 	
-	$("#loader").show();
 	
     var logArray = function(arrayLogs,callback){
         ref.child("log").once('value',function (snapshot) {
@@ -196,64 +192,98 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		for(var i=0;i<callback.length;i++){
 			arrayDispositivo.push(callback[i]);
 		}
-		
-		var equipamento = function(arrayDispositivo,callback){
-			ref.child("equipamento").once('value',function (snapshot) {
-				feed = [];
-				snapshot.forEach(function (child) {
-					var data = child.val();
-					feed.push(data);
-				});
-				callback(feed);
+	});
+	
+	var arraySetor = $scope.setores = [];
 
+	var setor = function(arraySetor,callback){
+		ref.child("setor").once('value',function (snapshot) {
+			feed = [];
+			snapshot.forEach(function (child) {
+				var data = child.val();
+				feed.push(data);
 			});
+			callback(feed);
+
+		});
+	}
+
+	setor(arraySetor,function (callback) {
+		for(var i=0;i<callback.length;i++){
+			arraySetor.push(callback[i]);
 		}
-		equipamento(arrayEquipamento,function (callback) {
-			for(var i=0;i<callback.length;i++){
-				arrayEquipamento.push(callback[i]);
-			}
-			var arraySetor = $scope.setores = [];
-
-			var setor = function(arraySetor,callback){
-				ref.child("setor").once('value',function (snapshot) {
-					feed = [];
-					snapshot.forEach(function (child) {
-						var data = child.val();
-						feed.push(data);
-					});
-					callback(feed);
-
-				});
-			}
-
-			setor(arraySetor,function (callback) {
-				for(var i=0;i<callback.length;i++){
-					arraySetor.push(callback[i]);
-				}
+	});
+	
+	var equipamento = function(arrayEquipamento,callback){
+		ref.child("equipamento").once('value',function (snapshot) {
+			feed = [];
+			snapshot.forEach(function (child) {
 				
-				// var log = [];
-				var value = [];
-				
-				
-				for(var i=0;i<arrayEquipamento.length;i++){
-					aux_dispositivo = arrayDispositivo.filter(function(value,index,arr){
-						
-						return value.codigo == arrayEquipamento[i].dispositivo;
-					});
+				var data = child.val();
+				feed.push(data);
+			});
+			callback(feed);
+			
+		});
+	}
+	equipamento(arrayEquipamento,function (callback) {
+		for(var i=0;i<callback.length;i++){
+			
+			arrayEquipamento.push(callback[i]);
+			console.log(arrayEquipamento.length);
+		}
+	
 
-					aux_setor = arraySetor.filter(function(value,index,arr){
-						return value.codigo == arrayEquipamento[i].setor;
-					});
-					
+	
+	
+	var value = [];
+	
+	console.log(arrayEquipamento);
+	console.log(arrayEquipamento.length);
+	
+	for(var i=0;i<arrayEquipamento.length;i++){
+		console.log("enntrou no for");
+		aux_dispositivo = arrayDispositivo.filter(function(value,index,arr){
+			
+			return value.codigo == arrayEquipamento[i].dispositivo;
+		});
 
+		aux_setor = arraySetor.filter(function(value,index,arr){
+			return value.codigo == arrayEquipamento[i].setor;
+		});
+		
+
+		
+		
+		if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
+			setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
+			
+				if(arrayLogs == [] || arrayLogs.length < arrayDispositivo.length){
+					log_aux = {
+							inicial:aux_dispositivo[0].Data,
+							data: aux_dispositivo[0].Data,
+							latitude_dispositivo: aux_dispositivo[0].Latitude,
+							longitude_dispositivo: aux_dispositivo[0].Longitude,
+							nome: arrayEquipamento[i].nome,
+							equipamento_id: arrayEquipamento[i].codigo,
+							setor_nome: arrayEquipamento[i].setor_nome,
+							setor_id: arrayEquipamento[0].setor,
+							latitude_setor: aux_setor[0].latitude,
+							longitude_setor: aux_setor[0].longitude,
+							setor_atual: setor_atual,
+							codigo :0
+						}
 					
+						log.push(log_aux);
+						cadastrar(log_aux,log_aux.equipamento_id,"log");
+						//$window.location.reload();
 					
-					if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
-						setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
-						
-						
+				}else{
+					
+					var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
+						if(exited == false){
 							log_aux = {
-							
+								inicial:aux_dispositivo[0].Data,
 								data: aux_dispositivo[0].Data,
 								latitude_dispositivo: aux_dispositivo[0].Latitude,
 								longitude_dispositivo: aux_dispositivo[0].Longitude,
@@ -264,83 +294,80 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 								latitude_setor: aux_setor[0].latitude,
 								longitude_setor: aux_setor[0].longitude,
 								setor_atual: setor_atual,
-								codigo :i
+								codigo :1
 							}
-							
-							
+						
 							log.push(log_aux);
 							cadastrar(log_aux,log_aux.equipamento_id,"log");
+							//$window.location.reload();	
+						}else{
 							
+							var dados = arrayLogs.filter(function( element ) {
+							   return element !== undefined;
+							});
 							
-							var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
-							console.log("Está fora do setor", exited);
-							
-							if(exited == true){
-								var dados = arrayLogs.filter(function( element ) {
-								   return element !== undefined;
-								});
-								
-								console.log(dados);
-								aux_logBase = dados.filter(function(value,index,arr){
-										return value.equipamento_id == arrayEquipamento[i].codigo;	
-								});
-								
-								console.log(aux_logBase);
-								console.log("aux",aux_logBase);
-								if(aux_logBase.length == 0){
-									
-									$window.location.reload();
-									
-								} else{
-									
-									
-			
-								}
-								
-							}
-							
-							
-							      k = compararDatas(aux_logBase[0].data,aux_dispositivo[0].Data)
-								  
-								  cadastrar(log_aux,log_aux.equipamento_id,"log")
-									
-									$scope.changeColor = function(codigo)){
-										var situacao = codigo;
-										console.log("Sit",situacao);
-										if(situacao == 0){
-											return {'color': 'gray'};
-										}
-										else if(situacao == 1){
-											return {'color': 'green'};
-										}
-										else if(situacao == 2){
-											return {'color': 'yellow'};
-										}
-										else if (situacao == 3){
-											return {'color': 'red'};
-										}
-										
+							console.log(dados);
+							aux_logBase = dados.filter(function(value,index,arr){
+									return value.equipamento_id == arrayEquipamento[i].codigo;	
+							});
+							var k = compararDatas(aux_logBase[0].inicial,aux_dispositivo[0].Data);
+								if(k == 2) {k = aux_logBase[0].codigo};
+									log_aux = {
+										inicial:aux_logBase[0].inicial,
+										data: aux_dispositivo[0].Data,
+										latitude_dispositivo: aux_dispositivo[0].Latitude,
+										longitude_dispositivo: aux_dispositivo[0].Longitude,
+										nome: arrayEquipamento[i].nome,
+										equipamento_id: arrayEquipamento[i].codigo,
+										setor_nome: arrayEquipamento[i].setor_nome,
+										setor_id: arrayEquipamento[0].setor,
+										latitude_setor: aux_setor[0].latitude,
+										longitude_setor: aux_setor[0].longitude,
+										setor_atual: setor_atual,
+										codigo : k
 									}
+								
+									log.push(log_aux);
+									cadastrar(log_aux,log_aux.equipamento_id,"log");
+									//$window.location.reload();	
+							  
 							
-	
 						}
-						
-						
-						
-						
-						
-						
 					
 					
 				}
-				if(log != null){ $("#loader").hide()};
-			});
-		});
+		}
+		
+	if(log != null){ $("#loader").hide()};
+		
+	}
 	});
-	
-	
-	
-	
+							
+	$scope.changeColor = function(codigo){
+		var situacao = codigo;
+		console.log("Sit",situacao);
+		if(situacao == 0){
+			return {'color': 'lightgray'};
+		}
+		else if(situacao == 1){
+			return {'color': 'lightgreen'};
+		}
+		else if(situacao == 2){
+			return {'color': 'yellow'};
+		}
+		else if (situacao == 3){
+			return {'color': 'orange'};
+		}
+		else if (situacao == 4){
+			return {'color': 'black'};
+		}
+		else if (situacao == 5){
+			return {'color': 'red'};
+		}
+		
+	}						
+							
+
 	$scope.detalhar = function(monitoramentoSelecionado) {
 		
 		$scope.monitoramento = monitoramentoSelecionado;
@@ -352,6 +379,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		$scope.monitoramento_equipamento = filtro[0];
 
 	}
+	
 	setTimeout(function(){ $("th").click(); }, 2000);
 
 	$("#lista td").attr("style","");
