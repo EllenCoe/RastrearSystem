@@ -15,26 +15,26 @@ body, html {
 	width: 350px;
 	margin: 0 auto;
 	border: 1px solid white;
-	background: #ffffff;
+	background: rgb(255,255,255);
 	min-height: 250px;
 	padding: 20px;
 	z-index: 9999;
 }
 #login-box .logo .logo-caption {
 	font-family: 'Poiret One', cursive;
-	color: white;
+	color: black;
 	text-align: center;
 	margin-bottom: 0px;
 }
 #login-box .logo .tweak {
-	color: #398564;
+	color: rgb(57,133,100);
 }
 #login-box .controls {
 	padding-top: 30px;
 }
 #login-box .controls input {
 	border-radius: 0px;
-	background: rgb(235, 253, 245);
+	background: rgb(200, 200, 200);
 	border: 0px;
 	color: black;
 	font-family: 'Nunito', sans-serif;
@@ -64,7 +64,7 @@ body, html {
 	-ms-transition: all 500ms ease;
 	-o-transition: all 500ms ease;
 	transition: all 500ms ease;
-	background: rgba(48, 46, 45, 1);
+	background: rgba(43,103,77 1);
 	border-color: #398564;
 }
 #particles-js{
