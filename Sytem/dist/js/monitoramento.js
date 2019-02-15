@@ -402,6 +402,6 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 
 	setInterval(function(){ 
 		$window.location.reload();
-		}, 60000);
+		}, 300000);
 
 });

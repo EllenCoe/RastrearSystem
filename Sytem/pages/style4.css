@@ -9,7 +9,9 @@ body {
 	
 	
 }
-
+.hidden{
+	display: none;
+}
 .alert {
 	z-index:990;
 	left:0;

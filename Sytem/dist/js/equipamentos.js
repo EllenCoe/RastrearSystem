@@ -6,6 +6,35 @@ function cadastrar(data,id,tabela){
     ref.child('/'+ tabela + '/' + id).set(postData);
 }
 
+function disponiveis(banco,equipamento){
+	
+	console.log("arrayDispositivosBanco",banco);
+	console.log("arrayDispositivosBancoEquipamentos",equipamento);
+	
+
+	console.log("length",banco.length)
+	console.log(banco[0]);
+	for(i=0;banco.length;i++){
+		
+		var dispositivo_ja_registrado = equipamento.indexOf(banco[i]);
+		
+		console.log("dispositivo_ja_registrado",dispositivo_ja_registrado);
+	}
+	
+	return 0;
+	
+	//console.log("disponiveis", disponivel);
+        /*var apenasNoR2 = r2.filter(function (element, index, array) {
+            if(r1.indexOf(element) == -1)
+                return element;
+        });
+
+        var todasAsDiferencas = apenasNoR1.concat(apenasNoR2);
+
+        alert(todasAsDiferencas);
+		*/
+	
+}
 var equipamentosModulo = angular.module('equipamentosModulo', ['dirPagination']);
 equipamentosModulo.controller("equipamentosController", function($scope, $http, $window) {
 
@@ -18,7 +47,6 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 	});
 
     var arraySetor = $scope.setores = [];
-	var arrayDispositivosCadastrados = [];
 	
 	$("#loader").show();
 	
@@ -42,10 +70,48 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
     });
 	
 	
+	
+	
     var arrayEquipamento = $scope.equipamentos = [];
-
+	
     var equipamento = function(arrayEquipamento,callback){
         ref.child("equipamento").once('value',function (snapshot) {
+
+            feed = [];
+            snapshot.forEach(function (child) {
+                var data = child.val();
+				
+                feed.push(data);				
+            });
+            callback(feed);
+
+        });
+    }
+	
+    equipamento(arrayEquipamento,function (callback) {
+        for(var i=0;i<=callback.length;i++){
+            if (callback[i] !== undefined){
+                arrayEquipamento.push(callback[i]);
+		
+            }
+        }
+		
+		
+		
+		
+        $("th").click();
+		
+		if(arrayEquipamento.length != 0){ $("#loader").hide()};
+		
+    });
+	
+	
+	var arrayDispositivosBanco = [];
+	
+	var arrayDispositivos = $scope.dispositivos = [];
+
+    var dispositivoBanco = function(arrayDispositivos,callback){
+        ref.child("dispositivos").once('value',function (snapshot) {
 
             feed = [];
             snapshot.forEach(function (child) {
@@ -56,20 +122,35 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 
         });
     }
-    equipamento(arrayEquipamento,function (callback) {
+	
+    dispositivoBanco(arrayDispositivosBanco,function (callback) {
         for(var i=0;i<=callback.length;i++){
             if (callback[i] !== undefined){
-                arrayEquipamento.push(callback[i]);
-				arrayDispositivosCadastrados.push(callback[i].dispositivo);
-               
+                arrayDispositivosBanco.push(callback[i]);
+				var value = [];	
             }
         }
-        $("th").click();
 		
-		if(arrayEquipamento.length != 0){ $("#loader").hide()};
-		
+		for(var j=0;j<arrayDispositivosBanco.length;j++){
+			
+					equip = arrayEquipamento.filter(function(value,index,arr){
+						
+						return value.dispositivo == arrayDispositivosBanco[j].codigo;
+					
+				});
+				
+				if(equip.length == 0){ 
+					
+					arrayDispositivos.push(arrayDispositivosBanco[j]);
+					//console.log(arrayDispositivosBanco);
+					
+					}
+				//console.log("equip ", equip );
+			}
+	
     });
-		
+	
+	
     
     setTimeout(function(){ $("th").click(); }, 3000);
 
@@ -88,6 +169,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
     $scope.selecionaDispositivo = function(dispositivoSelecionado) {
         $scope.dispositivo = dispositivoSelecionado;
         $scope.equipamento.tag = setorSelecionado;
+		
         
     },
     $scope.limparCampos = function() {
@@ -100,21 +182,31 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         modelo = $("#modelo").val();
         serie = $("#serie").val();
         patrimonio = $("#patrimonio").val();
-        tag_ident = $("#tag").val();
+		tag_ident = $("#tag").val();
+        console.log(tag_ident);
+		
+		$('#tag option:selected').remove();
+		
         setor = $("#inputGroupSelect3").val();
         setor = parseInt(setor);
         setor_nome = $('#inputGroupSelect3 option:selected').text();
-
+		
         if (tag_ident == "" || tag_ident == undefined){
 			tag_ident = false;
             tag_ident = "0";
-        }
+        }else{
+			//$("#tag option[value="+ tag_ident +"]").attr('disabled','disabled').siblings().removeAttr('disabled');
+			//$("#theSelect).find(tag_ident).remove();
+			$scope.disabled={};
+				
+		}
         //else, cadastra na tabela de log
 		
+		//alert("valor do dispositivoselecionado",tag_ident);
 		var filtro = arrayEquipamento.filter( function(item) { return item.dispositivo != 0 } );
-		console.log(filtro);
+		console.log("FILTRO",filtro);
 		var tag_exist = filtro.filter( function(item) { return item.dispositivo == tag_ident });
-		console.log(tag_exist);
+		console.log("tag_exist",tag_exist);
 		
 		if(tag_exist.length > 0){
 			$('#alertDispositivo').fadeIn(1000);
@@ -147,6 +239,21 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 					setor:setor
 				};
 				cadastrar(postData,id,"equipamento");
+				console.log("arrayDispositivos",arrayDispositivos);
+				
+				console.log("arrayDispositivos antes",arrayDispositivos);
+				
+				arrayDispositivos = arrayDispositivos.filter(function(value,index,arr){
+			
+					return value.codigo != tag_ident;
+				});
+				
+				
+				
+	
+
+				
+				
 			});
 			
 			$('#alertCadastrar').fadeIn(1000);
@@ -154,6 +261,8 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 				$('#alertCadastrar').fadeOut(1000); 
 			}, 5000);
 			$scope.limparCampos();
+			
+			
 		}
 
         
@@ -356,6 +465,19 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
             $scope.sortKey = keyname;
             $scope.reverse = !$scope.reverse;
     }
+	
+	$(document).ready(function () {
+    $('tag').change(function () {
+        $('tag option').attr('disabled', false);
+        $('tag').each(function() {
+            var val = $(this).find('option:selected').val();
+            if (!val) return;
+            $('tag option').filter(function() {
+                return $(this).val() == val;
+            }).attr('disabled', 'disabled');
+        });
+    });
+});
         /*$scope.listarequipamentos = function(){
         $http.get(urlequipamento).success(function (equipamentos){
         $scope.equipamentos = equipamentos;
@@ -364,6 +486,8 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         });}
         $scope.listarequipamentos();*/
 	
+	//$("#theSelect").onchange();
 		
-		
+	
+				
 });
