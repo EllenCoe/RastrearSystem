@@ -23,7 +23,7 @@ function disponiveis(banco,equipamento){
 	
 	return 0;
 	
-	//console.log("disponiveis", disponivel);
+	console.log("disponiveis", disponivel);
         /*var apenasNoR2 = r2.filter(function (element, index, array) {
             if(r1.indexOf(element) == -1)
                 return element;
@@ -110,7 +110,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 	
 	var arrayDispositivos = $scope.dispositivos = [];
 
-    var dispositivoBanco = function(arrayDispositivos,callback){
+    var dispositivoBanco = function(arrayDispositivosBanco,callback){
         ref.child("dispositivos").once('value',function (snapshot) {
 
             feed = [];
@@ -130,14 +130,16 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 				var value = [];	
             }
         }
+		console.log("Dispositivos banco",arrayDispositivosBanco);
 		
 		for(var j=0;j<arrayDispositivosBanco.length;j++){
 			
 					equip = arrayEquipamento.filter(function(value,index,arr){
 						
 						return value.dispositivo == arrayDispositivosBanco[j].codigo;
-					
-				});
+					});
+					console.log(equip);
+				
 				
 				if(equip.length == 0){ 
 					

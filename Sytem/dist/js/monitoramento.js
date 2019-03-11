@@ -119,7 +119,7 @@ function compararDatas(antiga,nova){
 		console.log("Dispositivo não atualizado");
 		return 2;
 	}
-	else if(diferenca_miliseconds >= 3600000 && diferenca_miliseconds < 7200000){
+	else if(diferenca_miliseconds >0  && diferenca_miliseconds < 7200000){
 		console.log("De 1 a 2h hora fora do Setor");
 		return 3;
 	}
@@ -261,8 +261,8 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		
 		if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
 			setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
-			
-				if(arrayLogs == [] || arrayLogs.length < arrayDispositivo.length){
+				
+				if(arrayLogs == []){
 					log_aux = {
 							inicial:aux_dispositivo[0].Data,
 							data: aux_dispositivo[0].Data,
@@ -283,6 +283,13 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 						//$window.location.reload();
 					
 				}else{
+					
+					for(r=0; r <arrayLogs.length;r++){
+							console.log(arrayLogs);
+							
+							
+					};
+					
 					
 					var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
 						if(exited == false){
@@ -315,7 +322,8 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 									return value.equipamento_id == arrayEquipamento[i].codigo;	
 							});
 							var k = compararDatas(aux_logBase[0].inicial,aux_dispositivo[0].Data);
-								if(k == 2) {k = aux_logBase[0].codigo};
+							console.log(aux_logBase[0].inicial);
+								if(k == 2 && aux_logBase[0].codigo>0) {k = aux_logBase[0].codigo};
 									log_aux = {
 										inicial:aux_logBase[0].inicial,
 										data: aux_dispositivo[0].Data,
