@@ -261,7 +261,7 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		
 		if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
 			setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
-				
+			
 				if(arrayLogs == []){
 					log_aux = {
 							inicial:aux_dispositivo[0].Data,
@@ -281,19 +281,29 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 						log.push(log_aux);
 						cadastrar(log_aux,log_aux.equipamento_id,"log");
 						//$window.location.reload();
+						
 					
-				}else{
+				}else if (arrayLogs != []){
 					
-					for(r=0; r <arrayLogs.length;r++){
-							console.log(arrayLogs);
+					aux_log = arrayLogs.filter(function(value,index,arr){
+						
+						return value != undefined
+					});
+					console.log(aux_log);
+					array_logs = [];
+					for(r=0;r<aux_log.length;r++){
+					array_logs.push(aux_log[r].equipamento_id);
+						
+					}
+					console.log(array_logs);
+					
+					
+					existe_log = array_logs.indexOf(arrayEquipamento[i].codigo);
+					
+					
+						if( existe_log < 0){
 							
-							
-					};
-					
-					
-					var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
-						if(exited == false){
-							log_aux = {
+								log_aux = {
 								inicial:aux_dispositivo[0].Data,
 								data: aux_dispositivo[0].Data,
 								latitude_dispositivo: aux_dispositivo[0].Latitude,
@@ -305,25 +315,46 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 								latitude_setor: aux_setor[0].latitude,
 								longitude_setor: aux_setor[0].longitude,
 								setor_atual: setor_atual,
-								codigo :1
+								codigo :0
 							}
 						
 							log.push(log_aux);
 							cadastrar(log_aux,log_aux.equipamento_id,"log");
-							//$window.location.reload();	
+							//$window.location.reload();
 						}else{
 							
-							var dados = arrayLogs.filter(function( element ) {
-							   return element !== undefined;
-							});
+							var exited = fora_setor(arrayEquipamento[i].setor_nome,setor_atual);
+							if(exited == false){
+								log_aux = {
+									inicial:aux_dispositivo[0].Data,
+									data: aux_dispositivo[0].Data,
+									latitude_dispositivo: aux_dispositivo[0].Latitude,
+									longitude_dispositivo: aux_dispositivo[0].Longitude,
+									nome: arrayEquipamento[i].nome,
+									equipamento_id: arrayEquipamento[i].codigo,
+									setor_nome: arrayEquipamento[i].setor_nome,
+									setor_id: arrayEquipamento[0].setor,
+									latitude_setor: aux_setor[0].latitude,
+									longitude_setor: aux_setor[0].longitude,
+									setor_atual: setor_atual,
+									codigo :1
+								}
 							
-							
-							aux_logBase = dados.filter(function(value,index,arr){
-									return value.equipamento_id == arrayEquipamento[i].codigo;	
-							});
-							var k = compararDatas(aux_logBase[0].inicial,aux_dispositivo[0].Data);
-							console.log(aux_logBase[0].inicial);
-								if(k == 2 && aux_logBase[0].codigo>0) {k = aux_logBase[0].codigo};
+								log.push(log_aux);
+								cadastrar(log_aux,log_aux.equipamento_id,"log");
+								//$window.location.reload();	
+							}else{
+								
+								var dados = arrayLogs.filter(function( element ) {
+								   return element !== undefined;
+								});
+								aux_logBase = dados.filter(function(value,index,arr){
+										return value.equipamento_id == arrayEquipamento[i].codigo;	
+								});
+								var k = compararDatas(aux_logBase[0].inicial,aux_dispositivo[0].Data);
+								console.log(aux_logBase[0].inicial);
+									if(k == 2 && aux_logBase[0].codigo>0) {k = aux_logBase[0].codigo};
+									
 									log_aux = {
 										inicial:aux_logBase[0].inicial,
 										data: aux_dispositivo[0].Data,
@@ -338,13 +369,18 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 										setor_atual: setor_atual,
 										codigo : k
 									}
-								
+									
 									log.push(log_aux);
 									cadastrar(log_aux,log_aux.equipamento_id,"log");
 									//$window.location.reload();	
 							  
-							
-						}
+								
+								}	
+					    }
+					
+					
+					
+					
 					
 					
 				}
@@ -397,8 +433,11 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		
 		$scope.monitoramento = monitoramentoSelecionado;
 		
+		console.log($scope.monitoramento);
+		
 		var id = $scope.monitoramento.equipamento_id;
 		var filtro = arrayEquipamento.filter( function(item) { return item.codigo == id } );
+		console.log(filtro);
 		
 		
 		$scope.monitoramento_equipamento = filtro[0];
@@ -411,5 +450,4 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 	setInterval(function(){ 
 		$window.location.reload();
 		}, 300000);
-
-});
+	});

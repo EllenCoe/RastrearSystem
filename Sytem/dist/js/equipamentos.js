@@ -69,7 +69,30 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         }
     });
 	
+	var arrayLogs = $scope.logs = [];
 	
+	
+    var logArray = function(arrayLogs,callback){
+        ref.child("log").once('value',function (snapshot) {
+
+            feed = [];
+            snapshot.forEach(function (child) {
+                var data = child.val();
+                feed.push(data);				
+            });
+            callback(feed);
+
+        });
+    }
+	
+	
+    logArray(arrayLogs,function (callback) {
+        for(var i=0;i<=callback.length;i++){
+			if(callback != undefined){
+				arrayLogs.push(callback[i]);
+			}
+        }
+    });
 	
 	
     var arrayEquipamento = $scope.equipamentos = [];
@@ -355,6 +378,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
             dispositivo = dispositivo_old;
         }
 		
+		
 		var filtro = arrayEquipamento.filter( function(item) { return item.dispositivo != 0 } );
 		console.log(filtro);
 		var dispositivo_exist = filtro.filter( function(item) { return item.dispositivo == dispositivo });
@@ -366,6 +390,14 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 			$('#alertDispositivo').fadeOut(1000); 
 			}, 5000);
 		}else{
+		console.log("DISPOSITIVO OLD",dispositivo_old);
+		if(dispositivo_old > 0){
+			
+			if(dispositivo == 0 | dispositivo != dispositivo_old ){
+				cadastrar(null,id,"log");
+				
+			}
+		}
 		$("#cancel-"+id).hide();
         $("#alterar-"+id).hide();
         $("#editar-"+id).show();
@@ -425,9 +457,10 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         $scope.equipamentos = $scope.equipamentos.filter(function(value, index, arr){
             return value.codigo != id;
         });
-
+		
+		
         console.log($scope.setores);
-
+		cadastrar(null,id,"log");
         cadastrar(null,id,"equipamento");
 
         $('#alertExcluir').fadeIn(1000);
