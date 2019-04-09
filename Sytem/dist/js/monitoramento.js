@@ -20,53 +20,99 @@ function toRad(number){
 	return Math.abs(number * Math.PI / 180);
 }
 
-function calcula_alguma_coisa(latitude,longitude,arraySetor){
-		var lat2 = latitude;
-		var lon2 = longitude;
-		var arrayDistancia = [];
-		for(var j = 0; j<arraySetor.length;j++){
+function calcula_alguma_coisa(latitude,longitude,arraySetor,pressao,estado){
+	
+		var pressãoTerreo = 101131;
 		
-			
-			var lat1 = arraySetor[j].latitude; 
-			var lon1 = arraySetor[j].longitude; 
+		var pressaoDispositivo = pressao;
+		//console.log("Pressao Dispositivo",pressaoDispositivo);
+		
+		var difPressao =  pressãoTerreo - pressaoDispositivo;
+		
+		var arredondadoParaProximo = Math.round(difPressao/70);
+		
+		console.log("Andar", arredondadoParaProximo);
 
-			// alert(lat2);
-			// alert(lon2);
+		console.log(arraySetor);
+	
+		aux_altura = arraySetor.filter(function(value,index,arr){
+			
+			return value.andar == arredondadoParaProximo.toString();
+		});
 
-			// alert(lat1);
-			// alert(lon1);
+		//console.log(aux_altura);
+		
+		if(aux_altura.length == 0){
+			console.log("altura não cadastrada");
+			return "Nenhum setor cadastrado com essa altura."
+		} else {
 			
+			//fazer um tramemtnto se for 0 
+			var lat2 = latitude;
+			var lon2 = longitude;
+			var arrayDistancia = [];
+			for(var j = 0; j<aux_altura.length;j++){
+
 			
-			var R = 6371; // km 
-			//has a problem with the .toRad() method below.
-			var x1 = lat2-lat1;
-			var dLat = toRad(x1);
-			var x2 = lon2-lon1;
-			var dLon = toRad(x2);  
-			var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
-							Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
-							Math.sin(dLon/2) * Math.sin(dLon/2);  
-			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-			var d = (R * c)*1000;
-			//console.log(d);
-			arrayDistancia.push(d);	
-			//console.log(arrayDistancia);
-	}
-	
-	
-			var minimaDistancia = Math.min.apply(Math,arrayDistancia);
-			posicao = arrayDistancia.indexOf(minimaDistancia);
+				var lat1 = aux_altura[j].latitude; 
+				var lon1 = aux_altura[j].longitude; 
+
+				// alert(lat2);
+				// alert(lon2);
+
+				// alert(lat1);
+				// alert(lon1);
 				
-				//console.log(posicao);
 				
-			if(minimaDistancia<=5){
-				
-				var result = arraySetor[posicao].nome;
+				var R = 6371; // km 
+				//has a problem with the .toRad() method below.
+				var x1 = lat2-lat1;
+				var dLat = toRad(x1);
+				var x2 = lon2-lon1;
+				var dLon = toRad(x2);  
+				var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+								Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+								Math.sin(dLon/2) * Math.sin(dLon/2);  
+				var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+				var d = (R * c)*1000;
+				//console.log(d);
+				arrayDistancia.push(d);	
+				//console.log(arrayDistancia);
 			}
-			else{
-			result = "Não cadastrado. Setor mais próximo: " + arraySetor[posicao].nome;
-			}
-	return result;
+		
+				console.log("arrayDistancia", arrayDistancia);
+				var minimaDistancia = Math.min.apply(Math,arrayDistancia);
+				
+				posicao = arrayDistancia.indexOf(minimaDistancia);
+					
+					//console.log(posicao);
+					
+				if(minimaDistancia<=10){
+					
+					var result = aux_altura[posicao].nome;
+				}
+				
+				else if(estado == "API"){
+					if(minimaDistancia <= 45){
+						result = aux_altura[posicao].nome  + "API";
+					}
+						else{
+
+							result = "Setor mais próximo: " + aux_altura[posicao].nome;
+						}
+				} else{
+					result = "Setor mais próximo: " + aux_altura[posicao].nome;
+				
+					
+				}
+				
+				
+				
+				
+		}
+	
+		
+	 return result;
 	// console.log(d);
 	// if(d<=10){
 	// 	alert("está no setor"+arraySetor[j].nome);
@@ -116,20 +162,20 @@ function compararDatas(antiga,nova){
 	var diferenca_miliseconds = date_nova.getTime() - date_antiga.getTime();
 	
 	if(diferenca_miliseconds == 0){
-		console.log("Dispositivo não atualizado");
+		//console.log("Dispositivo não atualizado");
 		return 2;
 	}
 	else if(diferenca_miliseconds >0  && diferenca_miliseconds < 7200000){
-		console.log("De 1 a 2h hora fora do Setor");
+		//console.log("De 1 a 2h hora fora do Setor");
 		return 3;
 	}
 	else if(diferenca_miliseconds >= 7200000 && diferenca_miliseconds < 14400000){
-		console.log("De duas a 4h hora fora do Setor");
+		//console.log("De duas a 4h hora fora do Setor");
 		return 4;
 	}
 	else if(diferenca_miliseconds >=14400000){
 		
-		console.log("Mais de a 4h hora fora do Setor");
+		//console.log("Mais de a 4h hora fora do Setor");
 		return 5;
 	}
 	
@@ -149,6 +195,8 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		
 		$('body').delay(250).css({'overflow': 'visible'});
 	});
+	
+	
 	
 	var log = $scope.monitoramentos = [];
 	var arrayDispositivo = [];
@@ -260,7 +308,11 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		
 		
 		if (arrayDispositivo[0] !== undefined && arrayEquipamento[i].dispositivo != "0"){
-			setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor);
+			
+			//console.log("aux_dispositivo[0]", aux_dispositivo[0]);
+			
+			
+			setor_atual = calcula_alguma_coisa(aux_dispositivo[0].Latitude,aux_dispositivo[0].Longitude,arraySetor,aux_dispositivo[0].Pressao,aux_dispositivo[0].Estado);
 			
 				if(arrayLogs == []){
 					log_aux = {
@@ -268,12 +320,14 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 							data: aux_dispositivo[0].Data,
 							latitude_dispositivo: aux_dispositivo[0].Latitude,
 							longitude_dispositivo: aux_dispositivo[0].Longitude,
+							pressao_dispositivo:aux_dispositivo[0].Pressao,
 							nome: arrayEquipamento[i].nome,
 							equipamento_id: arrayEquipamento[i].codigo,
 							setor_nome: arrayEquipamento[i].setor_nome,
 							setor_id: arrayEquipamento[0].setor,
 							latitude_setor: aux_setor[0].latitude,
 							longitude_setor: aux_setor[0].longitude,
+							andar_setor:aux_setor[0].andar,
 							setor_atual: setor_atual,
 							codigo :0
 						}
@@ -289,13 +343,13 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 						
 						return value != undefined
 					});
-					console.log(aux_log);
+					//console.log(aux_log);
 					array_logs = [];
 					for(r=0;r<aux_log.length;r++){
 					array_logs.push(aux_log[r].equipamento_id);
 						
 					}
-					console.log(array_logs);
+					//console.log(array_logs);
 					
 					
 					existe_log = array_logs.indexOf(arrayEquipamento[i].codigo);
@@ -352,8 +406,19 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 										return value.equipamento_id == arrayEquipamento[i].codigo;	
 								});
 								var k = compararDatas(aux_logBase[0].inicial,aux_dispositivo[0].Data);
-								console.log(aux_logBase[0].inicial);
-									if(k == 2 && aux_logBase[0].codigo>0) {k = aux_logBase[0].codigo};
+								
+								
+								
+								//console.log(aux_logBase[0].inicial);
+									if(k == 2 && aux_logBase[0].codigo>0) {
+										if(aux_logBase[0].setor_nome =! aux_logBase[0].setorAtual){
+											k = 3;
+										}else if (k > 2){	
+											k = aux_logBase[0].codigo
+										}
+									}
+									
+									
 									
 									log_aux = {
 										inicial:aux_logBase[0].inicial,
@@ -433,11 +498,11 @@ monitoramentoModulo.controller("monitoramentoController", function($scope, $http
 		
 		$scope.monitoramento = monitoramentoSelecionado;
 		
-		console.log($scope.monitoramento);
+		//console.log($scope.monitoramento);
 		
 		var id = $scope.monitoramento.equipamento_id;
 		var filtro = arrayEquipamento.filter( function(item) { return item.codigo == id } );
-		console.log(filtro);
+		//console.log(filtro);
 		
 		
 		$scope.monitoramento_equipamento = filtro[0];

@@ -8,22 +8,22 @@ function cadastrar(data,id,tabela){
 
 function disponiveis(banco,equipamento){
 	
-	console.log("arrayDispositivosBanco",banco);
-	console.log("arrayDispositivosBancoEquipamentos",equipamento);
+	//console.log("arrayDispositivosBanco",banco);
+	//console.log("arrayDispositivosBancoEquipamentos",equipamento);
 	
 
-	console.log("length",banco.length)
-	console.log(banco[0]);
+	//console.log("length",banco.length)
+	//console.log(banco[0]);
 	for(i=0;banco.length;i++){
 		
 		var dispositivo_ja_registrado = equipamento.indexOf(banco[i]);
 		
-		console.log("dispositivo_ja_registrado",dispositivo_ja_registrado);
+		//console.log("dispositivo_ja_registrado",dispositivo_ja_registrado);
 	}
 	
 	return 0;
 	
-	console.log("disponiveis", disponivel);
+	//console.log("disponiveis", disponivel);
         /*var apenasNoR2 = r2.filter(function (element, index, array) {
             if(r1.indexOf(element) == -1)
                 return element;
@@ -153,7 +153,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 				var value = [];	
             }
         }
-		console.log("Dispositivos banco",arrayDispositivosBanco);
+		//console.log("Dispositivos banco",arrayDispositivosBanco);
 		
 		for(var j=0;j<arrayDispositivosBanco.length;j++){
 			
@@ -161,7 +161,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 						
 						return value.dispositivo == arrayDispositivosBanco[j].codigo;
 					});
-					console.log(equip);
+					//console.log(equip);
 				
 				
 				if(equip.length == 0){ 
@@ -208,7 +208,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         serie = $("#serie").val();
         patrimonio = $("#patrimonio").val();
 		tag_ident = $("#tag").val();
-        console.log(tag_ident);
+        //console.log(tag_ident);
 		
 		$('#tag option:selected').remove();
 		
@@ -229,9 +229,9 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 		
 		//alert("valor do dispositivoselecionado",tag_ident);
 		var filtro = arrayEquipamento.filter( function(item) { return item.dispositivo != 0 } );
-		console.log("FILTRO",filtro);
+		//console.log("FILTRO",filtro);
 		var tag_exist = filtro.filter( function(item) { return item.dispositivo == tag_ident });
-		console.log("tag_exist",tag_exist);
+		//console.log("tag_exist",tag_exist);
 		
 		if(tag_exist.length > 0){
 			$('#alertDispositivo').fadeIn(1000);
@@ -264,9 +264,9 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 					setor:setor
 				};
 				cadastrar(postData,id,"equipamento");
-				console.log("arrayDispositivos",arrayDispositivos);
+				//console.log("arrayDispositivos",arrayDispositivos);
 				
-				console.log("arrayDispositivos antes",arrayDispositivos);
+				//console.log("arrayDispositivos antes",arrayDispositivos);
 				
 				arrayDispositivos = arrayDispositivos.filter(function(value,index,arr){
 			
@@ -327,7 +327,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         $("#input-dispositivo-"+id).show();
 
         setor_nome = $("#span-setor-"+id).text();
-        console.log(setor_nome);
+        //console.log(setor_nome);
         $("option").each(function(){
             if ($(this).text() == setor_nome){
                 $("#setor_select-"+id).val($(this).val());
@@ -380,17 +380,19 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
 		
 		
 		var filtro = arrayEquipamento.filter( function(item) { return item.dispositivo != 0 } );
-		console.log(filtro);
+		//console.log(filtro);
 		var dispositivo_exist = filtro.filter( function(item) { return item.dispositivo == dispositivo });
-		console.log("dispositivo exist",dispositivo_exist);
-		
-		if(dispositivo_exist.length > 0){
+		//console.log("dispositivo exist",dispositivo_exist);
+		//console.log(dispositivo_exist);
+		if(dispositivo_exist.length > 0 && dispositivo_exist[0].dispositivo != dispositivo_old.toString() ){
+			
 			$('#alertDispositivo').fadeIn(1000);
 			setTimeout(function() { 
 			$('#alertDispositivo').fadeOut(1000); 
 			}, 5000);
+			
 		}else{
-		console.log("DISPOSITIVO OLD",dispositivo_old);
+		//console.log("DISPOSITIVO OLD",dispositivo_old);
 		if(dispositivo_old > 0){
 			
 			if(dispositivo == 0 | dispositivo != dispositivo_old ){
@@ -459,7 +461,7 @@ equipamentosModulo.controller("equipamentosController", function($scope, $http, 
         });
 		
 		
-        console.log($scope.setores);
+        //console.log($scope.setores);
 		cadastrar(null,id,"log");
         cadastrar(null,id,"equipamento");
 

@@ -138,6 +138,7 @@
 						 <th ng-click="ordenar('nome')">Nome <i class="fa fa-fw fa-sort"></i></th>
 						 <th ng-click="ordenar('latitude')">Latitude<i class="fa fa-fw fa-sort"></i></th>
 						 <th ng-click="ordenar('longitude')">Longitude <i class="fa fa-fw fa-sort"></i></th>
+						 <th>Andar</th>
 						 <th>Editar</th>
 						 <th>Deletar</th>
 					  </tr>
@@ -157,7 +158,12 @@
 						 <td style="display:none">
 							<span id = "span-longitude-{{setoresTabela.codigo}}">{{setoresTabela.longitude}}</span> 
 							<input id = "input-longitude-{{setoresTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="longitude" placeholder="{{setoresTabela.longitude}}"> 
-						 </td>                              
+						 </td> 
+						 <td style="display:none">
+							<span id = "span-andar-{{setoresTabela.codigo}}">{{setoresTabela.andar}}</span> 
+							<input id = "input-andar-{{setoresTabela.codigo}}" style = "display:none;width:102px;" value = "" type="text"  id="andar" placeholder="{{setoresTabela.andar}}"> 
+						 </td> 
+						 
 						 <td>
 							<button type="button" id = "editar-{{setoresTabela.codigo}}" formnovalidate ng-click = "editar(setoresTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-edit"></i>
 							<button style="display:none" type="button" id = "alterar-{{setoresTabela.codigo}}" formnovalidate ng-click = "alterar(setoresTabela.codigo)"  class="btn btn-outline-secondary"> <i class="fas fa-save"></i>

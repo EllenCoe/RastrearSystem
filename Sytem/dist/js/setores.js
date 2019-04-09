@@ -14,6 +14,8 @@ var setoresModulo = angular.module('setoresModulo',['dirPagination']);
 
 setoresModulo.controller("setoresController", function($scope, $http,$window){
 	
+	$scope.andares =[{"codigo": 0,"texto":"Terreo"},{"codigo": 1,"texto":"Primeiro andar"},{"codigo": 2,"texto":"Segundo andar"},{"codigo": 3,"texto":"Terceiro andar"}];
+	
 	$(window).on('load', function () {
 		
 		$('#preloader .inner').fadeOut();
@@ -49,6 +51,8 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 	});
 	
 	var arrayEquipamento = [];
+	
+	
 
     var equipamento = function(arrayEquipamento,callback){
         ref.child("equipamento").once('value',function (snapshot) {
@@ -103,6 +107,9 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 
 		$("#span-longitude-"+id).hide();
 		$("#input-longitude-"+id).show();
+		
+		$("#span-andar-"+id).hide();
+		$("#input-andar-"+id).show();
 	}
 
 	$scope.alterar = function(id) {
@@ -110,6 +117,7 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		nome_old = $("#span-nome-"+id).text();
 		latitude_old = $("#span-latitude-"+id).text();
 		longitude_old = $("#span-longitude-"+id).text();
+		andar_old = $("#span-andar-"+id).text();
 
 		
 
@@ -125,12 +133,16 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 
 		$("#span-longitude-"+id).show();
 		$("#input-longitude-"+id).hide();
+		
+		$("#span-andar-"+id).show();
+		$("#input-andar-"+id).hide();
+
 
 
 		nome = $("#input-nome-"+id).val();
 		latitude = $("#input-latitude-"+id).val();
 		longitude = $("#input-longitude-"+id).val();
-		
+		andar = $("#input-andar-"+id).val();
 		
 		
 		if (nome == ""){
@@ -142,11 +154,15 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		if (longitude == ""){
 			longitude = longitude_old;
 		}
+		if (andar == ""){
+			andar = andar_old;
+		}
 		postData = {
 			codigo: id,
 			nome: nome,
 			latitude: latitude,
-			longitude: longitude
+			longitude: longitude,
+			andar:andar
 		};
 		cadastrar(postData,id,"setor");
 
@@ -155,6 +171,7 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		$("#span-nome-"+id).text(nome);
 		$("#span-latitude-"+id).text(latitude);
 		$("#span-longitude-"+id).text(longitude);
+		$("#span-andar-"+id).text(andar);
 		
 		if(nome != nome_old || latitude != latitude_old || longitude != longitude_old){
 			$('#alertSalvar').fadeIn(1000);
@@ -205,6 +222,9 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 
 		$("#span-longitude-"+id).show();
 		$("#input-longitude-"+id).hide();
+		
+		$("#span-andar-"+id).show();
+		$("#input-andar-"+id).hide();
 	}
 			
 	$scope.salvar = function() {
@@ -213,6 +233,9 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
 		nome = $("#nome").val();
 		latitude = $("#latitude").val();
 		longitude = $("#longitude").val();
+		andar = $("#andar").val();
+        console.log("ANDAR", andar);
+		
 
 
 		ref.child("setor").once('value', function(snapshot) {
@@ -230,8 +253,10 @@ setoresModulo.controller("setoresController", function($scope, $http,$window){
                 codigo: id,
                 nome: nome,
                 latitude: latitude,
-                longitude: longitude
+                longitude: longitude,
+				andar: andar
         };
+			console.log(id);
 			cadastrar(postData,id,"setor");
 		});
 
